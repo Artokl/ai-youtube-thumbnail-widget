@@ -5,9 +5,9 @@
 {
 	"$schema": "node_modules/wrangler/config-schema.json",
 	"account_id": "bc34af2e3d4f7bf89df3620170103341",
-	"name": "worker",
+	"name": "oc-thumbnail-worker",
 	"main": "src/index.js",
-	"compatibility_date": "2026-03-03",
+	"compatibility_date": "2026-03-09",
 	"observability": {
 		"enabled": true
 	},
@@ -15,8 +15,10 @@
 		"nodejs_compat"
 	],
 	"vars": {
-		"FAL_MODEL": "fal-ai/flux"
-	}
+		"FAL_MODEL": "fal-ai/bytedance/seedream/v4.5/edit",
+		"FAL_LLM_PATH": "openrouter/router/openai/v1/chat/completions",
+		"FAL_LLM_MODEL": "meta-llama/llama-3.1-8b-instruct"
+    }
 	/**
 	 * Smart Placement
 	 * https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

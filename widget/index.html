@@ -9,21 +9,19 @@
     :root{
       --bg: #f4f3ff;
       --text: #12131a;
-      --muted:#6b6f86;
-      --brand:#5b43ff;
-      --brand2:#7b61ff;
+      --muted: #6b6f86;
+      --brand: #5b43ff;
+      --brand2: #7b61ff;
       --shadow: 0 18px 50px rgba(18,19,26,.08);
-      --radius: 18px;
-      --stroke: rgba(120,106,255,.22);
       --strokeStrong: rgba(123,97,255,.55);
-      --card: rgba(255,255,255,.72);
     }
 
-    *{box-sizing:border-box}
-    html,body{height:100%}
+    *{ box-sizing:border-box; }
+    html, body{ height:100%; }
+
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       color:var(--text);
       background:
         radial-gradient(900px 420px at 50% -120px, rgba(123,97,255,.20), transparent 70%),
@@ -32,195 +30,255 @@
     }
 
     .wrap{
-      width: min(1320px, 96vw);
-      margin: 24px auto 40px;
-      padding: 0 8px;
+      width:min(1340px, 96vw);
+      margin:24px auto 40px;
+      padding:0 8px;
     }
 
     .topPills{
-      display:flex; gap:10px; justify-content:center; align-items:center;
-      margin: 8px 0 14px;
+      display:flex;
+      gap:10px;
+      justify-content:center;
+      align-items:center;
+      margin:8px 0 14px;
       flex-wrap:wrap;
     }
+
     .pill{
       font-size:12px;
-      color: rgba(18,19,26,.72);
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(120,106,255,.18);
-      padding: 8px 12px;
-      border-radius: 999px;
-      box-shadow: 0 10px 30px rgba(18,19,26,.06);
-      backdrop-filter: blur(10px);
+      color:rgba(18,19,26,.72);
+      background:rgba(255,255,255,.74);
+      border:1px solid rgba(120,106,255,.18);
+      padding:8px 12px;
+      border-radius:999px;
+      box-shadow:0 10px 30px rgba(18,19,26,.06);
+      backdrop-filter:blur(10px);
     }
 
     h1{
-      font-size: clamp(28px, 4.2vw, 54px);
-      letter-spacing: -0.03em;
+      font-size:clamp(28px, 4.2vw, 54px);
+      letter-spacing:-0.03em;
       text-align:center;
-      margin: 12px 0 10px;
-      line-height: 1.02;
+      margin:12px 0 10px;
+      line-height:1.02;
     }
-    h1 .brand{ color: var(--brand2); }
+
+    h1 .brand{
+      color:var(--brand2);
+    }
 
     .subtitle{
       text-align:center;
-      color: var(--muted);
-      max-width: 820px;
-      margin: 0 auto 22px;
-      font-size: 15px;
-      line-height: 1.45;
+      color:var(--muted);
+      max-width:860px;
+      margin:0 auto 22px;
+      font-size:15px;
+      line-height:1.45;
     }
 
     .shell{
-      background: rgba(255,255,255,.55);
-      border: 1px solid rgba(120,106,255,.20);
-      border-radius: 22px;
-      box-shadow: var(--shadow);
-      backdrop-filter: blur(10px);
+      background:rgba(255,255,255,.55);
+      border:1px solid rgba(120,106,255,.20);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      backdrop-filter:blur(10px);
       overflow:hidden;
     }
 
     .grid{
       display:grid;
-      grid-template-columns: 1fr 1fr;
-      min-height: 740px;
-      align-items: stretch;
+      grid-template-columns:520px 1fr;
+      min-height:780px;
+      align-items:stretch;
     }
 
-    /* LEFT */
     .left{
-      padding: 18px;
-      border-right: 1px solid rgba(120,106,255,.16);
-      background: linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.36));
+      padding:18px;
+      border-right:1px solid rgba(120,106,255,.16);
+      background:linear-gradient(180deg, rgba(255,255,255,.48), rgba(255,255,255,.36));
       display:flex;
+    }
+
+    .right{
+      padding:18px;
+      display:flex;
+      flex-direction:column;
+      gap:14px;
     }
 
     .cardPanel{
       width:100%;
-      background: rgba(255,255,255,.72);
-      border: 1px solid rgba(120,106,255,.18);
-      border-radius: var(--radius);
-      padding: 18px;
-      box-shadow: 0 12px 40px rgba(18,19,26,.06);
+      background:rgba(255,255,255,.74);
+      border:1px solid rgba(120,106,255,.18);
+      border-radius:20px;
+      padding:18px;
+      box-shadow:0 12px 40px rgba(18,19,26,.06);
       display:flex;
       flex-direction:column;
-      min-height: 100%;
+      min-height:100%;
     }
 
     label{
       display:block;
-      font-size: 14px;
-      font-weight: 850;
-      color: rgba(18,19,26,.82);
-      margin: 18px 0 8px;
-      letter-spacing: -0.01em;
+      font-size:14px;
+      font-weight:850;
+      color:rgba(18,19,26,.82);
+      margin:18px 0 8px;
+      letter-spacing:-0.01em;
     }
-    label:first-of-type{ margin-top: 4px; }
 
-    input, textarea{
+    label:first-of-type{
+      margin-top:4px;
+    }
+
+    input,
+    textarea{
       width:100%;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(120,106,255,.22);
-      background: rgba(255,255,255,.88);
-      outline: none;
-      color: var(--text);
-      font-size: 15px;
-      transition: .18s ease;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(120,106,255,.22);
+      background:rgba(255,255,255,.88);
+      outline:none;
+      color:var(--text);
+      font-size:15px;
+      transition:.18s ease;
     }
-    textarea{ min-height: 132px; resize: vertical; }
 
-    input:hover, textarea:hover{
-      border-color: var(--strokeStrong);
-      box-shadow: 0 0 0 3px rgba(123,97,255,.12);
+    textarea{
+      min-height:132px;
+      resize:vertical;
     }
-    input:focus, textarea:focus{
-      border-color: rgba(123,97,255,.70);
-      box-shadow: 0 0 0 4px rgba(123,97,255,.18);
+
+    input:hover,
+    textarea:hover{
+      border-color:var(--strokeStrong);
+      box-shadow:0 0 0 3px rgba(123,97,255,.12);
+    }
+
+    input:focus,
+    textarea:focus{
+      border-color:rgba(123,97,255,.70);
+      box-shadow:0 0 0 4px rgba(123,97,255,.18);
     }
 
     .advancedRow{
-      margin-top: 10px;
+      margin-top:10px;
       display:none;
     }
+
     .advLabel{
-      font-size: 12px;
-      font-weight: 850;
-      color: rgba(18,19,26,.70);
-      margin: 12px 0 8px;
+      font-size:12px;
+      font-weight:850;
+      color:rgba(18,19,26,.70);
+      margin:12px 0 8px;
     }
 
-    /* Custom dropdown */
-    .dd{ position: relative; }
+    .dd{
+      position:relative;
+    }
+
     .ddBtn{
       width:100%;
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 12px;
-      padding: 14px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(120,106,255,.22);
-      background: rgba(255,255,255,.88);
-      color: rgba(18,19,26,.88);
-      font-size: 15px;
-      font-weight: 750;
+      gap:12px;
+      padding:14px;
+      border-radius:14px;
+      border:1px solid rgba(120,106,255,.22);
+      background:rgba(255,255,255,.88);
+      color:rgba(18,19,26,.88);
+      font-size:15px;
+      font-weight:750;
       cursor:pointer;
-      transition: .18s ease;
+      transition:.18s ease;
       user-select:none;
     }
+
     .ddBtn:hover{
-      border-color: var(--strokeStrong);
-      box-shadow: 0 0 0 3px rgba(123,97,255,.12);
+      border-color:var(--strokeStrong);
+      box-shadow:0 0 0 3px rgba(123,97,255,.12);
     }
+
     .ddBtn:focus{
       outline:none;
-      border-color: rgba(123,97,255,.70);
-      box-shadow: 0 0 0 4px rgba(123,97,255,.18);
+      border-color:rgba(123,97,255,.70);
+      box-shadow:0 0 0 4px rgba(123,97,255,.18);
     }
-    .chev{ width: 18px; height: 18px; opacity: .75; flex: 0 0 auto; }
+
+    .chev{
+      width:18px;
+      height:18px;
+      opacity:.75;
+      flex:0 0 auto;
+    }
+
     .ddMenu{
       position:absolute;
-      left:0; right:0;
-      top: calc(100% + 8px);
-      background: rgba(255,255,255,.92);
-      border: 1px solid rgba(120,106,255,.22);
-      border-radius: 14px;
-      box-shadow: 0 18px 55px rgba(18,19,26,.12);
-      backdrop-filter: blur(10px);
-      padding: 8px;
+      left:0;
+      right:0;
+      top:calc(100% + 8px);
+      background:rgba(255,255,255,.92);
+      border:1px solid rgba(120,106,255,.22);
+      border-radius:14px;
+      box-shadow:0 18px 55px rgba(18,19,26,.12);
+      backdrop-filter:blur(10px);
+      padding:8px;
       display:none;
-      z-index: 50;
+      z-index:50;
     }
-    .dd.open .ddMenu{ display:block; }
+
+    .dd.open .ddMenu{
+      display:block;
+    }
+
     .ddItem{
-      padding: 10px 12px;
-      border-radius: 12px;
-      font-weight: 750;
-      color: rgba(18,19,26,.82);
+      padding:10px 12px;
+      border-radius:12px;
+      font-weight:750;
+      color:rgba(18,19,26,.82);
       cursor:pointer;
-      transition: .15s ease;
+      transition:.15s ease;
       display:flex;
       align-items:center;
       justify-content:space-between;
     }
-    .ddItem:hover{ background: rgba(123,97,255,.10); color: rgba(18,19,26,.92); }
-    .ddItem.active{
-      background: rgba(123,97,255,.16);
-      color: rgba(18,19,26,.92);
-      box-shadow: 0 0 0 2px rgba(123,97,255,.12) inset;
-    }
-    .ddTick{ opacity: .9; font-size: 13px; color: rgba(91,67,255,.95); display:none; }
-    .ddItem.active .ddTick{ display:inline; }
 
-    .btnRow{ display:flex; gap:12px; margin-top: 18px; }
+    .ddItem:hover{
+      background:rgba(123,97,255,.10);
+      color:rgba(18,19,26,.92);
+    }
+
+    .ddItem.active{
+      background:rgba(123,97,255,.16);
+      color:rgba(18,19,26,.92);
+      box-shadow:0 0 0 2px rgba(123,97,255,.12) inset;
+    }
+
+    .ddTick{
+      opacity:.9;
+      font-size:13px;
+      color:rgba(91,67,255,.95);
+      display:none;
+    }
+
+    .ddItem.active .ddTick{
+      display:inline;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:12px;
+      margin-top:18px;
+    }
+
     .btn{
-      border: 1px solid rgba(120,106,255,.22);
-      background: rgba(255,255,255,.72);
-      color: var(--text);
-      padding: 14px 16px;
-      border-radius: 14px;
-      font-weight: 850;
+      border:1px solid rgba(120,106,255,.22);
+      background:rgba(255,255,255,.72);
+      color:var(--text);
+      padding:14px 16px;
+      border-radius:14px;
+      font-weight:850;
       cursor:pointer;
       flex:1;
       display:flex;
@@ -229,474 +287,573 @@
       gap:8px;
       transition:.18s ease;
       user-select:none;
-      font-size: 14px;
+      font-size:14px;
     }
+
     .btn:hover{
-      border-color: var(--strokeStrong);
-      box-shadow: 0 0 0 3px rgba(123,97,255,.12);
-      transform: translateY(-1px);
+      border-color:var(--strokeStrong);
+      box-shadow:0 0 0 3px rgba(123,97,255,.12);
+      transform:translateY(-1px);
     }
-    .btn:disabled{ opacity:.55; cursor:not-allowed; transform:none; box-shadow:none; }
+
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
+    }
+
     .btn.primary{
-      background: linear-gradient(180deg, rgba(123,97,255,.95), rgba(91,67,255,.95));
-      color: #fff;
-      border-color: rgba(123,97,255,.65);
+      background:linear-gradient(180deg, rgba(123,97,255,.95), rgba(91,67,255,.95));
+      color:#fff;
+      border-color:rgba(123,97,255,.65);
     }
+
     .btn.primary:hover{
-      box-shadow: 0 0 0 4px rgba(123,97,255,.18), 0 16px 40px rgba(123,97,255,.20);
+      box-shadow:
+        0 0 0 4px rgba(123,97,255,.18),
+        0 16px 40px rgba(123,97,255,.20);
     }
 
     .hint{
-      margin-top: 12px;
-      font-size: 12.5px;
-      color: var(--muted);
-      line-height: 1.35;
+      margin-top:12px;
+      font-size:12.5px;
+      color:var(--muted);
+      line-height:1.35;
     }
-    .bottomSpacer{ margin-top:auto; padding-top:18px; }
 
-    /* RIGHT */
-    .right{
-      padding: 18px;
-      display:flex;
-      flex-direction:column;
-      gap: 12px;
+    .leftBottom{
+      margin-top:24px;
+    }
+
+    .sectionTitle{
+      font-size:13px;
+      font-weight:800;
+      color:#6f57ff;
+      margin-bottom:12px;
+      letter-spacing:.02em;
+    }
+
+    .leftProofs{
+      display:grid;
+      grid-template-columns:repeat(3, 1fr);
+      gap:10px;
+    }
+
+    .leftProofCard{
+      border-radius:16px;
+      padding:14px 12px;
+      background:linear-gradient(180deg, rgba(245,241,255,.96), rgba(255,255,255,.95));
+      border:1px solid rgba(123,97,255,.14);
+      box-shadow:0 10px 24px rgba(18,19,26,.05);
+      min-height:122px;
+      transition:.18s ease;
+      cursor:default;
+    }
+
+    .leftProofCard:hover{
+      border-color:var(--strokeStrong);
+      box-shadow:
+        0 0 0 3px rgba(123,97,255,.12),
+        0 14px 30px rgba(91,67,255,.10);
+      transform:translateY(-1px);
+    }
+
+    .leftProofMetric{
+      font-size:24px;
+      font-weight:950;
+      letter-spacing:-0.03em;
+      color:#2b1d7d;
+      margin-bottom:4px;
+      line-height:1;
+    }
+
+    .leftProofTitle{
+      font-size:12.5px;
+      font-weight:850;
+      color:#1f163f;
+      margin-bottom:5px;
+      line-height:1.25;
+    }
+
+    .leftProofText{
+      font-size:12.5px;
+      line-height:1.4;
+      color:#6a628b;
     }
 
     .previewTop{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 10px;
-      padding: 2px 2px 0;
+      gap:10px;
+      padding:2px 2px 0;
     }
+
     .titleSmall{
-      font-size: 14px;
-      font-weight: 850;
-      color: rgba(18,19,26,.85);
+      font-size:14px;
+      font-weight:850;
+      color:rgba(18,19,26,.85);
     }
+
     .status{
       display:flex;
       align-items:center;
       gap:8px;
-      color: var(--muted);
-      font-size: 13px;
-      white-space: nowrap;
+      color:var(--muted);
+      font-size:13px;
+      white-space:nowrap;
     }
+
     .dot{
-      width:10px; height:10px;
+      width:10px;
+      height:10px;
       border-radius:999px;
-      background: rgba(107,111,134,.45);
-      box-shadow: 0 0 0 3px rgba(107,111,134,.12);
-    }
-    .dot.ok{ background: rgba(35,198,110,.9); box-shadow: 0 0 0 3px rgba(35,198,110,.16); }
-    .dot.work{ background: rgba(123,97,255,.9); box-shadow: 0 0 0 3px rgba(123,97,255,.16); }
-    .dot.bad{ background: rgba(255,77,109,.9); box-shadow: 0 0 0 3px rgba(255,77,109,.16); }
-
-    .heroStage{
-      position: relative;
-      flex: 1;
-      min-height: 640px;
-      border-radius: 18px;
-      border: 1px solid rgba(120,106,255,.18);
-      overflow: hidden;
-      background: rgba(255,255,255,.55);
-      box-shadow: 0 18px 55px rgba(18,19,26,.08);
+      background:rgba(107,111,134,.45);
+      box-shadow:0 0 0 3px rgba(107,111,134,.12);
     }
 
-    /* hide center status text while demo is visible */
-    .heroStage.demoActive .centerMessage{
-      display:none !important;
+    .dot.ok{
+      background:rgba(35,198,110,.9);
+      box-shadow:0 0 0 3px rgba(35,198,110,.16);
     }
 
-    /* IMPORTANT: hide anything that should NOT show "through photos" in demo */
-    .heroStage.demoActive .tools{
-      display:none !important;
-    }
-    .heroStage.demoActive #heroBadges{
-      display:none !important;
+    .dot.work{
+      background:rgba(123,97,255,.9);
+      box-shadow:0 0 0 3px rgba(123,97,255,.16);
     }
 
-    .heroBg{
-      position:absolute;
-      inset:0;
-      background-size: cover;
-      background-position: center;
-      filter: saturate(1.02);
-      transform: scale(1.02);
+    .dot.bad{
+      background:rgba(255,77,109,.9);
+      box-shadow:0 0 0 3px rgba(255,77,109,.16);
     }
 
-    .heroShade{
-      position:absolute;
-      inset:0;
+    .rightStack{
+      display:flex;
+      flex-direction:column;
+      gap:16px;
+    }
+
+    .youtubeCard{
+      background:#181818;
+      border-radius:22px;
+      padding:14px;
+      color:#fff;
+      box-shadow:0 18px 50px rgba(18,19,26,.18);
+      overflow:hidden;
+    }
+
+    .youtubeThumbWrap{
+      position:relative;
+      width:100%;
+      aspect-ratio:16/9;
+      border-radius:18px;
+      overflow:hidden;
       background:
-        radial-gradient(900px 420px at 50% 0%, rgba(255,255,255,.12), transparent 60%),
-        linear-gradient(180deg, rgba(18,19,26,.10), rgba(18,19,26,.30));
-      pointer-events:none;
+        linear-gradient(135deg, rgba(123,97,255,.24), rgba(91,67,255,.12)),
+        #2b2545;
     }
 
-    .heroOverlay{
+    .youtubeThumb{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .youtubeThumbEmpty{
       position:absolute;
       inset:0;
       display:flex;
       flex-direction:column;
-      justify-content:space-between;
-      padding: 14px;
-      z-index: 5;
-    }
-    /* When demo is active, let demo layer receive pointer events */
-    .heroStage.demoActive .heroOverlay{
-      pointer-events: none;
-    }
-
-    .heroBadges{
-      display:flex;
-      gap:10px;
-      align-items:center;
-    }
-    .badge{
-      background: rgba(255,255,255,.82);
-      border: 1px solid rgba(120,106,255,.18);
-      border-radius: 999px;
-      padding: 8px 10px;
-      font-size: 12px;
-      color: rgba(18,19,26,.75);
-      backdrop-filter: blur(10px);
-    }
-
-    .centerMessage{
-      display:flex;
       align-items:center;
       justify-content:center;
       text-align:center;
-      padding: 20px;
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      letter-spacing: -0.02em;
-      text-shadow: 0 10px 30px rgba(18,19,26,.35);
-      font-size: clamp(16px, 2.4vw, 26px);
-      opacity: 1;
-      transition: opacity .25s ease;
-      pointer-events:none;
+      padding:26px;
+      background:
+        radial-gradient(700px 240px at 50% 0%, rgba(202,184,255,.18), transparent 65%);
+      color:rgba(255,255,255,.86);
     }
-    .centerMessage.hidden{ opacity: 0; }
 
-    .tools{
+    .youtubeThumbEmptyTitle{
+      font-size:28px;
+      font-weight:900;
+      letter-spacing:-0.03em;
+      margin-bottom:8px;
+    }
+
+    .youtubeThumbEmptySub{
+      font-size:14px;
+      line-height:1.5;
+      max-width:460px;
+      color:rgba(255,255,255,.74);
+    }
+
+    .youtubeDuration{
+      position:absolute;
+      right:10px;
+      bottom:10px;
+      background:rgba(0,0,0,.84);
+      color:#fff;
+      font-size:12px;
+      border-radius:8px;
+      padding:4px 7px;
+      font-weight:700;
+      z-index:3;
+    }
+
+    .youtubeMetaRow{
+      display:flex;
+      gap:12px;
+      align-items:flex-start;
+      padding-top:12px;
+    }
+
+    .channelAvatar{
+      width:34px;
+      height:34px;
+      border-radius:50%;
+      overflow:hidden;
+      flex:0 0 auto;
+      background:linear-gradient(135deg, #ffffff, #d7d0ff);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      color:#1c1635;
+      font-weight:900;
+      font-size:13px;
+    }
+
+    .channelAvatar img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    .youtubeMetaText{
+      min-width:0;
+      flex:1;
+    }
+
+    .youtubeTitle{
+      color:#fff;
+      font-size:17px;
+      line-height:1.35;
+      font-weight:800;
+      margin-bottom:6px;
+      letter-spacing:-0.01em;
+      word-break:break-word;
+    }
+
+    .youtubeChannel{
+      color:rgba(255,255,255,.92);
+      font-size:14px;
+      line-height:1.4;
+      display:flex;
+      align-items:center;
+      gap:6px;
+    }
+
+    .verifiedDot{
+      width:15px;
+      height:15px;
+      border-radius:999px;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      font-size:10px;
+      background:rgba(255,255,255,.18);
+      color:#fff;
+    }
+
+    .youtubeStats{
+      color:rgba(255,255,255,.70);
+      font-size:14px;
+      line-height:1.4;
+      margin-top:4px;
+    }
+
+    .kebab{
+      color:rgba(255,255,255,.85);
+      font-size:22px;
+      line-height:1;
+      padding-top:2px;
+      flex:0 0 auto;
+    }
+
+    .actionBar{
       display:flex;
       gap:10px;
       flex-wrap:wrap;
-      justify-content:flex-end;
+      margin-top:14px;
     }
-    .linkBtn{
-      border: 1px solid rgba(255,255,255,.35);
-      background: rgba(255,255,255,.18);
-      color: #fff;
-      padding: 10px 12px;
-      border-radius: 12px;
+
+    .actionBtn{
+      border:none;
+      background:rgba(255,255,255,.12);
+      color:#fff;
+      padding:10px 14px;
+      border-radius:12px;
+      font-weight:800;
       cursor:pointer;
-      font-weight: 850;
       transition:.18s ease;
-      backdrop-filter: blur(10px);
-      font-size: 13px;
-    }
-    .linkBtn:hover{
-      border-color: rgba(123,97,255,.70);
-      box-shadow: 0 0 0 3px rgba(123,97,255,.16);
-      transform: translateY(-1px);
-    }
-    .linkBtn:disabled{ opacity:.55; cursor:not-allowed; transform:none; box-shadow:none; }
-
-    /* Custom text overlay (NO huge pill, just clean stroke) */
-    .overlayText{
-      position:absolute;
-      left: 50%;
-      transform: translateX(-50%);
-      width: min(92%, 980px);
-      text-align:center;
-      font-weight: 1000;
-      letter-spacing: -0.02em;
-      text-transform: none;
-      color: #fff;
-      font-size: clamp(34px, 6.4vw, 110px);
-      line-height: 0.95;
-      text-shadow:
-        0 10px 35px rgba(0,0,0,.35),
-        0 2px 0 rgba(0,0,0,.20);
-      -webkit-text-stroke: 6px rgba(0,0,0,.55);
-      paint-order: stroke fill;
-      filter: drop-shadow(0 10px 26px rgba(0,0,0,.35));
-      padding: 0 10px;
-      pointer-events:none;
-      display:none;
-      white-space: normal;
-      word-break: break-word;
-      z-index: 6;
-    }
-    .overlayText.pos-bottom{ bottom: 54px; top: auto; }
-    .overlayText.pos-top{ top: 64px; bottom: auto; }
-
-    /* ===== Demo compare stage (draggable curtain) ===== */
-    .demoStage{
-      position:absolute;
-      inset:0;
-      z-index: 20; /* ensure it is truly above everything in preview */
-      opacity: 1;
-      transition: opacity .25s ease, transform .25s ease;
-      pointer-events:auto;
-    }
-    .demoTopChips, .demoHint, .demoArrows { pointer-events:none; }
-    .demoStage.hidden{
-      opacity: 0;
-      transform: scale(1.01);
-      pointer-events:none;
-    }
-    .demoCompare{
-      position:absolute;
-      inset:0;
-      --split: 50; /* 0..100 */
-    }
-    .demoImg{
-      position:absolute;
-      inset:0;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-size: cover;
-    }
-    .demoImgGenerated{
-      filter: saturate(1.04) contrast(1.02);
-    }
-    .demoImgOriginal{
-      filter: saturate(0.96) contrast(1.00);
-      clip-path: inset(0 calc(100% - (var(--split) * 1%)) 0 0);
+      backdrop-filter:blur(10px);
     }
 
-    .demoTopChips{
-      position:absolute;
-      top: 12px;
-      left: 12px;
-      right: 12px;
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap: 10px;
-      z-index: 4;
-    }
-    .demoChip{
-      padding: 8px 10px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: -0.01em;
-      color: rgba(18,19,26,.82);
-      background: rgba(255,255,255,.84);
-      border: 1px solid rgba(120,106,255,.18);
-      backdrop-filter: blur(10px);
-      box-shadow: 0 10px 30px rgba(18,19,26,.10);
+    .actionBtn:hover{
+      transform:translateY(-1px);
+      background:rgba(255,255,255,.18);
+      box-shadow:0 10px 24px rgba(0,0,0,.18);
     }
 
-    /* Handle + line */
-    .demoHandle{
-      position:absolute;
-      top:0;
-      bottom:0;
-      left: calc(var(--split) * 1%);
-      transform: translateX(-50%);
-      width: 64px;                 /* зона хвата */
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      cursor: ew-resize;
-      touch-action: none;
-      z-index: 8;                  /* above images */
-      pointer-events:auto;
+    .actionBtn:disabled{
+      opacity:.45;
+      cursor:not-allowed;
+      transform:none;
+      box-shadow:none;
     }
 
-    .demoLine{
-      position:absolute;
-      top:0;
-      bottom:0;
-      width:2px;
-      background:rgba(255,255,255,.55);
+    .sectionCard{
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.78);
+      box-shadow:0 18px 60px rgba(124,92,255,.12);
+      backdrop-filter:blur(14px);
+      border-radius:22px;
+      padding:16px;
+    }
+
+    .exampleGrid{
+      display:grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap:12px;
+    }
+
+    .exampleCard{
+      border:none;
+      border-radius:16px;
+      padding:12px 12px;
+      min-height:60px;
+      text-align:left;
+      cursor:pointer;
+      transition:.18s ease;
+      position:relative;
+      overflow:hidden;
+      background: linear-gradient(180deg, rgba(255,255,255,.95), rgba(245,241,255,.96));
+      border:1px solid rgba(123,97,255,.14);
+      box-shadow:0 10px 24px rgba(18,19,26,.05);
+    }
+
+    .exampleCard:hover{
+      transform:translateY(-2px);
+      border-color:var(--strokeStrong);
       box-shadow:
-        0 0 0 1px rgba(0,0,0,.14),
-        0 10px 26px rgba(0,0,0,.18),
-        0 0 0 5px rgba(123,97,255,.09);
-      border-radius:2px;
+        0 0 0 3px rgba(123,97,255,.12),
+        0 16px 30px rgba(91,67,255,.10);
     }
 
-    /* --- hard kill: никаких "квадратов" на хэндле --- */
-    .demoHandle{
-      background: transparent !important;
-      box-shadow: none !important;
-      outline: none !important;
-      -webkit-tap-highlight-color: transparent;
-    }
-    .demoHandle::before,
-    .demoHandle::after{
-      content: none !important;
-    }
-    /* если вдруг в demoHandle остались какие-то символы/иконки из старых версий */
-    .demoHandle *:not(.demoLine){
-      display: none !important;
-    }
-
-    /* --- NEW: стрелки наружу, без квадрата, привязаны к split --- */
-    .demoArrows{
-      position: absolute;
-      left: calc(var(--split) * 1%);
-      top: 50%;
-      transform: translate(-50%, -120px); /* чуть выше центрального текста */
-      z-index: 9;
-      pointer-events: none;
-      width: 0;
-      height: 0;
-      filter: drop-shadow(0 10px 22px rgba(0,0,0,.22));
-      opacity: .95;
-    }
-
-    .demoArrow{
-      position: absolute;
-      top: 0;
-      width: 22px;
-      height: 22px;
-      background: transparent !important; /* без плашек */
-    }
-
-    /* Разнести по сторонам от линии */
-    .demoArrow.left{  right: 25px; } /* слева от линии */
-    .demoArrow.right{ left:  0px; } /* справа от линии */
-
-    .demoArrow::before,
-    .demoArrow::after{
+    .exampleCard::before{
       content:"";
       position:absolute;
-      top:50%;
-      width: 14px;
-      height: 3px;
-      background: rgba(255,255,255,.96);
-      border-radius: 999px;
-    }
-
-    /* RIGHT arrow (→): линии выходят из левого края */
-    .demoArrow.right::before{
-      left: 4px;
-      transform-origin: left center;
-      transform: translateY(-50%) rotate(-35deg);
-    }
-    .demoArrow.right::after{
-      left: 4px;
-      transform-origin: left center;
-      transform: translateY(-50%) rotate(35deg);
-    }
-
-    /* LEFT arrow (←): линии выходят из правого края */
-    .demoArrow.left::before{
-      right: 4px;
-      transform-origin: right center;
-      transform: translateY(-50%) rotate(145deg);
-    }
-    .demoArrow.left::after{
-      right: 4px;
-      transform-origin: right center;
-      transform: translateY(-50%) rotate(-145deg);
-    }
-    
-    /* drag hint (small) */
-    .dragHint{
-      position:absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -92px); /* под стрелками, но выше главного хинта */
-      padding: 10px 12px;
-      border-radius: 14px;
-      background: rgba(18,19,26,.34);
-      border: 1px solid rgba(255,255,255,.18);
-      color: rgba(255,255,255,.92);
-      font-weight: 900;
-      font-size: 13px;
-      letter-spacing: -0.01em;
-      box-shadow: 0 18px 55px rgba(18,19,26,.20);
-      backdrop-filter: blur(10px);
-      opacity: .70;
+      inset:0;
+      opacity:.9;
       pointer-events:none;
-      z-index: 9;
-      white-space: nowrap;
     }
 
-    /* hover/active — hide drag hint */
-    .demoHandle:hover ~ .dragHint,
-    .demoHandle:active ~ .dragHint{
-      opacity: 0;
+    .exampleCard.vlog::before{
+      background:
+        radial-gradient(120px 60px at 85% 10%, rgba(255,183,120,.22), transparent 60%),
+        linear-gradient(135deg, rgba(255,236,224,.95), rgba(255,255,255,0));
     }
 
-    .demoHint{
-      position:absolute;
-      left: 50%;
-      top: 50%;
-      transform: translate(-50%, -50%);
-      text-align:center;
-      padding: 18px 18px;
-      border-radius: 18px;
-      background: rgba(18,19,26,.36);
-      border: 1px solid rgba(255,255,255,.18);
-      box-shadow: 0 18px 55px rgba(18,19,26,.22);
-      backdrop-filter: blur(10px);
-      z-index: 4;
-    }
-    .demoHintTitle{
-      font-size: 20px;
-      font-weight: 1000;
-      color: rgba(255,255,255,.96);
-      letter-spacing: -0.02em;
-      text-shadow: 0 12px 30px rgba(0,0,0,.25);
-    }
-    .demoHintSub{
-      margin-top: 4px;
-      font-size: 14px;
-      font-weight: 850;
-      color: rgba(255,255,255,.82);
+    .exampleCard.tech::before{
+      background:
+        radial-gradient(120px 60px at 85% 10%, rgba(107,203,255,.22), transparent 60%),
+        linear-gradient(135deg, rgba(229,245,255,.95), rgba(255,255,255,0));
     }
 
-    @media (max-width: 980px){
-      .grid{ grid-template-columns: 1fr; }
-      .left{ border-right: none; border-bottom: 1px solid rgba(120,106,255,.16); }
-      .heroStage{ min-height: 520px; }
-      .tools{ justify-content:flex-start; }
-      .overlayText{ -webkit-text-stroke: 5px rgba(0,0,0,.55); }
-      .overlayText.pos-top{ top: 56px; }
-      .overlayText.pos-bottom{ bottom: 62px; }
-
-      .demoHint{ padding: 14px 14px; border-radius: 16px; }
-      .demoHintTitle{ font-size: 18px; }
-      .demoHintSub{ font-size: 13px; }
-
-      .demoArrows{ transform: translate(-50%, -108px); width: 96px; }
-      .dragHint{ transform: translate(-50%, -82px); font-size: 12.5px; }
+    .exampleCard.tutorial::before{
+      background:
+        radial-gradient(120px 60px at 85% 10%, rgba(170,255,214,.18), transparent 60%),
+        linear-gradient(135deg, rgba(243,255,249,.95), rgba(255,255,255,0));
     }
-    /* FIX: принудительно развернуть правую стрелку */
-.demoArrow.right{
-  transform: scaleX(-1) !important;
-  transform-origin: center !important;
-}
+
+    .exampleCard.business::before{
+      background:
+        radial-gradient(120px 60px at 85% 10%, rgba(191,181,255,.20), transparent 60%),
+        linear-gradient(135deg, rgba(244,241,255,.95), rgba(255,255,255,0));
+    }
+
+    .exampleCard.music::before{
+      background:
+        radial-gradient(120px 60px at 85% 10%, rgba(255,122,182,.18), transparent 60%),
+        linear-gradient(135deg, rgba(255,239,246,.95), rgba(255,255,255,0));
+    }
+
+    .exampleCardInner{
+      position:relative;
+      z-index:1;
+    }
+
+    .exampleTag{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:22px;
+      min-width:22px;
+      padding:0 7px;
+      border-radius:999px;
+      font-size:11px;
+      font-weight:900;
+      margin-bottom:6px;
+      color:#3a2f7a;
+      background:rgba(255,255,255,.72);
+      border:1px solid rgba(123,97,255,.14);
+    }
+
+    .exampleName{
+      font-size:13px;
+      font-weight:900;
+      color:#201747;
+      line-height:1.2;
+    }
+
+    .bottomCarouselWrap{
+      padding:0 18px 18px;
+      border-top:1px solid rgba(120,106,255,.12);
+    }
+
+    .bottomCarouselCard{
+      margin-top:18px;
+      background:rgba(255,255,255,.82);
+      border:1px solid rgba(255,255,255,.78);
+      box-shadow:0 18px 60px rgba(124,92,255,.12);
+      backdrop-filter:blur(14px);
+      border-radius:22px;
+      padding:16px;
+    }
+
+    .carouselViewport{
+      overflow:hidden;
+      width:100%;
+      position:relative;
+      mask-image:linear-gradient(to right, transparent 0, black 4%, black 96%, transparent 100%);
+      -webkit-mask-image:linear-gradient(to right, transparent 0, black 4%, black 96%, transparent 100%);
+    }
+
+    .carouselTrack{
+      display:flex;
+      gap:14px;
+      width:max-content;
+      animation:carouselMove 44s linear infinite;
+      will-change:transform;
+    }
+
+    .carouselViewport:hover .carouselTrack{
+      animation-play-state:paused;
+    }
+
+    @keyframes carouselMove{
+      from{ transform:translateX(0); }
+      to{ transform:translateX(calc(-50% - 7px)); }
+    }
+
+    .galleryItem{
+      border-radius:18px;
+      overflow:hidden;
+      aspect-ratio:16/9;
+      background:
+        linear-gradient(135deg, rgba(123,97,255,.20), rgba(91,67,255,.10)),
+        #ece8ff;
+      box-shadow:0 12px 28px rgba(18,19,26,.08);
+      flex:0 0 235px;
+      position:relative;
+      transition:.18s ease;
+    }
+
+    .galleryItem:hover{
+      transform:translateY(-2px);
+      box-shadow:
+        0 0 0 3px rgba(123,97,255,.12),
+        0 18px 34px rgba(91,67,255,.14);
+    }
+
+    .galleryItem img{
+      width:100%;
+      height:100%;
+      object-fit:cover;
+      display:block;
+    }
+
+    @media (max-width:1180px){
+      .grid{
+        grid-template-columns:1fr;
+      }
+
+      .left{
+        border-right:none;
+        border-bottom:1px solid rgba(120,106,255,.16);
+      }
+    }
+
+    @media (max-width:980px){
+      .leftProofs{
+        grid-template-columns:1fr;
+      }
+
+      .galleryItem{
+        flex-basis:220px;
+      }
+    }
+
+    @media (max-width:860px){
+      .youtubeTitle{
+        font-size:16px;
+      }
+
+      .youtubeMetaRow{
+        gap:10px;
+      }
+
+      .galleryItem{
+        flex-basis:190px;
+      }
+
+      .carouselTrack{
+        gap:12px;
+      }
+    }
+
+    @media (max-width: 1180px){
+      .exampleGrid{
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 860px){
+      .exampleGrid{
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <div class="topPills">
       <div class="pill">🔥 Fast results</div>
-      <div class="pill">⚡ Uses YouTube context</div>
+      <div class="pill">⚡ YouTube-aware generation</div>
       <div class="pill">🔒 No sign-up</div>
     </div>
 
     <h1>AI YouTube <span class="brand">Thumbnail</span> Generator</h1>
+
     <div class="subtitle">
-      Paste a public YouTube link and generate a high-CTR thumbnail.
-      Add your own text or let AI propose a headline.
+      Paste a public YouTube link and generate a more clickable thumbnail.
+      Add your own text or let AI suggest a short headline.
     </div>
 
     <div class="shell">
       <div class="grid">
-        <!-- LEFT -->
         <div class="left">
           <div class="cardPanel">
             <div>
@@ -704,7 +861,7 @@
               <input id="ytUrl" type="text" placeholder="https://www.youtube.com/watch?v=..." />
 
               <label>Custom text (optional)</label>
-              <input id="customText" type="text" placeholder="e.g., I Tried X For 30 Days" />
+              <input id="customText" type="text" placeholder="e.g. I Tried X For 30 Days" />
 
               <div class="advancedRow" id="advancedRow">
                 <div class="advLabel">Text position</div>
@@ -716,6 +873,7 @@
                       <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg>
                   </button>
+
                   <div class="ddMenu" id="ddMenuPos" role="menu" aria-label="Text position">
                     <div class="ddItem active" data-value="auto">Auto <span class="ddTick">✓</span></div>
                     <div class="ddItem" data-value="top">Top <span class="ddTick">✓</span></div>
@@ -727,7 +885,7 @@
               </div>
 
               <label>Extra instructions (optional)</label>
-              <textarea id="extra" placeholder="e.g., keep it minimal, use arrows, add a shocked expression, high readability"></textarea>
+              <textarea id="extra" placeholder="e.g. bold, bright, premium, modern YouTube style, strong contrast, clean subject"></textarea>
 
               <div class="btnRow">
                 <button id="generateBtn" class="btn primary" disabled>✨ Generate thumbnail</button>
@@ -735,91 +893,183 @@
               </div>
 
               <div class="hint">
-                If Custom text is empty — AI generates a thematic headline (like before).<br/>
-                If Custom text is provided — we apply it exactly and only that text.
+                If Custom text is empty — AI generates a short thematic headline.<br />
+                If Custom text is provided — it will be applied exactly as overlay text.
               </div>
             </div>
 
-            <div class="bottomSpacer"></div>
+            <div class="leftBottom">
+              <div class="sectionTitle">Why it works</div>
+
+              <div class="leftProofs">
+                <div class="leftProofCard">
+                  <div class="leftProofMetric">+138%</div>
+                  <div class="leftProofTitle">Potential CTR uplift</div>
+                  <div class="leftProofText">
+                    Stronger contrast, larger focal point, and better readability in feed.
+                  </div>
+                </div>
+
+                <div class="leftProofCard">
+                  <div class="leftProofMetric">16:9</div>
+                  <div class="leftProofTitle">Ready for YouTube</div>
+                  <div class="leftProofText">
+                    Framed correctly for homepage, search results, and recommended videos.
+                  </div>
+                </div>
+
+                <div class="leftProofCard">
+                  <div class="leftProofMetric">Fast</div>
+                  <div class="leftProofTitle">Quick iteration</div>
+                  <div class="leftProofText">
+                    Test several visual directions faster without manual design work.
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <!-- RIGHT -->
         <div class="right">
           <div class="previewTop">
             <div class="titleSmall">Preview / Result</div>
-            <div class="status"><span id="dot" class="dot"></span><span id="statusText">Waiting for a YouTube link</span></div>
-          </div>
-
-          <div class="heroStage" id="heroStage">
-            <div class="heroBg" id="heroBg"></div>
-            <div class="heroShade"></div>
-
-            <!-- Demo compare (shown only in Waiting/Invalid state) -->
-            <div class="demoStage" id="demoStage" aria-hidden="true">
-              <div class="demoCompare" id="demoCompare" style="--split: 50;">
-                <div class="demoImg demoImgGenerated" id="demoRight"></div>
-                <div class="demoImg demoImgOriginal" id="demoLeft"></div>
-
-                <div class="demoTopChips">
-                  <div class="demoChip">Original</div>
-                  <div class="demoChip">Generated</div>
-                </div>
-
-                <!-- handle (draggable area) -->
-                <div class="demoHandle" id="demoHandle" role="slider"
-                     aria-label="Compare slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="50">
-                  <div class="demoLine"></div>
-                </div>
-
-                <!-- arrows + drag hint are tied to --split (so they stay centered on the line) -->
-                <div class="demoArrows" aria-hidden="true">
-                  <span class="demoArrow left"></span>
-                  <span class="demoArrow right"></span>
-                </div>
-                <div class="dragHint" id="dragHint">Drag to compare</div>
-
-                <div class="demoHint">
-                  <div class="demoHintTitle">Paste a YouTube link</div>
-                  <div class="demoHintSub">to load preview</div>
-                </div>
-              </div>
-            </div>
-
-            <div class="heroOverlay">
-              <div class="heroBadges" id="heroBadges">
-                <div class="badge" id="modeBadge">Demo</div>
-                <div class="badge" id="sourceBadge">Example</div>
-              </div>
-
-              <div class="centerMessage hidden" id="centerMessage"></div>
-
-              <div class="overlayText pos-bottom" id="overlayText"></div>
-
-              <div class="tools">
-                <button class="linkBtn" id="downloadBtn" disabled>⬇ Download</button>
-                <button class="linkBtn" id="copyBtn" disabled>📋 Copy image</button>
-                <button class="linkBtn" id="openBtn" disabled>↗ Open</button>
-                <button class="linkBtn" id="shareBtn" disabled>🔗 Copy link</button>
-              </div>
+            <div class="status">
+              <span id="dot" class="dot"></span>
+              <span id="statusText">Waiting for a YouTube link</span>
             </div>
           </div>
 
+          <div class="rightStack">
+            <div class="youtubeCard">
+              <div class="youtubeThumbWrap">
+                <img id="youtubeThumb" class="youtubeThumb" alt="Generated thumbnail preview" style="display:none;" />
+
+                <div class="youtubeThumbEmpty" id="youtubeThumbEmpty">
+                  <div class="youtubeThumbEmptyTitle">Paste a YouTube link</div>
+                  <div class="youtubeThumbEmptySub">
+                    We’ll analyze the video and show the result immediately in a YouTube-style card.
+                  </div>
+                </div>
+
+                <span class="youtubeDuration" id="youtubeDuration">12:48</span>
+              </div>
+
+              <div class="youtubeMetaRow">
+                <div class="channelAvatar" id="channelAvatar">AI</div>
+
+                <div class="youtubeMetaText">
+                  <div class="youtubeTitle" id="youtubeTitle">
+                    Your generated thumbnail preview will appear here
+                  </div>
+
+                  <div class="youtubeChannel">
+                    <span id="youtubeChannelName">Creator Channel</span>
+                    <span class="verifiedDot">✓</span>
+                  </div>
+
+                  <div class="youtubeStats" id="youtubeStats">124K views • 3 days ago</div>
+                </div>
+
+                <div class="kebab">⋮</div>
+              </div>
+
+              <div class="actionBar">
+                <button class="actionBtn" id="downloadBtn" disabled>Download</button>
+                <button class="actionBtn" id="copyBtn" disabled>Copy image</button>
+                <button class="actionBtn" id="openBtn" disabled>Open</button>
+              </div>
+            </div>
+
+            <div class="sectionCard">
+              <div class="sectionTitle">Try example videos</div>
+
+              <div class="exampleGrid">
+                <button class="exampleCard vlog" type="button" data-url="https://www.youtube.com/watch?v=jNQXAC9IVRw">
+                  <div class="exampleCardInner">
+                    <div class="exampleTag">📷</div>
+                    <div class="exampleName">Vlog</div>
+                  </div>
+                </button>
+
+                <button class="exampleCard tech" type="button" data-url="https://www.youtube.com/watch?v=n9i7ztjBRN4">
+                  <div class="exampleCardInner">
+                    <div class="exampleTag">⚡</div>
+                    <div class="exampleName">Tech</div>
+                  </div>
+                </button>
+
+                <button class="exampleCard tutorial" type="button" data-url="https://www.youtube.com/watch?v=qfHX2cNA4MY">
+                  <div class="exampleCardInner">
+                    <div class="exampleTag">🎓</div>
+                    <div class="exampleName">Tutorial</div>
+                  </div>
+                </button>
+
+                <button class="exampleCard business" type="button" data-url="https://www.youtube.com/watch?v=9VlvbpXwLJs">
+                  <div class="exampleCardInner">
+                    <div class="exampleTag">📈</div>
+                    <div class="exampleName">Business</div>
+                  </div>
+                </button>
+
+                <button class="exampleCard music" type="button" data-url="https://www.youtube.com/watch?v=5NV6Rdv1a3I">
+                  <div class="exampleCardInner">
+                    <div class="exampleTag">🎵</div>
+                    <div class="exampleName">Music</div>
+                  </div>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="bottomCarouselWrap">
+        <div class="bottomCarouselCard">
+          <div class="sectionTitle">Thumbnail ideas</div>
+
+          <div class="carouselViewport">
+            <div class="carouselTrack">
+                <div class="galleryItem"><img src="1.jpg" alt="Thumbnail idea 1" /></div>
+                <div class="galleryItem"><img src="2.jpg" alt="Thumbnail idea 2" /></div>
+                <div class="galleryItem"><img src="3.jpg" alt="Thumbnail idea 3" /></div>
+                <div class="galleryItem"><img src="4.jpg" alt="Thumbnail idea 4" /></div>
+                <div class="galleryItem"><img src="5.jpg" alt="Thumbnail idea 5" /></div>
+                <div class="galleryItem"><img src="6.jpg" alt="Thumbnail idea 6" /></div>
+                <div class="galleryItem"><img src="7.jpg" alt="Thumbnail idea 7" /></div>
+                <div class="galleryItem"><img src="8.jpg" alt="Thumbnail idea 8" /></div>
+                <div class="galleryItem"><img src="9.jpg" alt="Thumbnail idea 9" /></div>
+                <div class="galleryItem"><img src="10.jpg" alt="Thumbnail idea 10" /></div>
+
+                <div class="galleryItem"><img src="1.jpg" alt="Thumbnail idea 1 duplicate" /></div>
+                <div class="galleryItem"><img src="2.jpg" alt="Thumbnail idea 2 duplicate" /></div>
+                <div class="galleryItem"><img src="3.jpg" alt="Thumbnail idea 3 duplicate" /></div>
+                <div class="galleryItem"><img src="4.jpg" alt="Thumbnail idea 4 duplicate" /></div>
+                <div class="galleryItem"><img src="5.jpg" alt="Thumbnail idea 5 duplicate" /></div>
+                <div class="galleryItem"><img src="6.jpg" alt="Thumbnail idea 6 duplicate" /></div>
+                <div class="galleryItem"><img src="7.jpg" alt="Thumbnail idea 7 duplicate" /></div>
+                <div class="galleryItem"><img src="8.jpg" alt="Thumbnail idea 8 duplicate" /></div>
+                <div class="galleryItem"><img src="9.jpg" alt="Thumbnail idea 9 duplicate" /></div>
+                <div class="galleryItem"><img src="10.jpg" alt="Thumbnail idea 10 duplicate" /></div>
+              </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
-<script>
-  window.OC_THUMBNAIL_WORKER_BASE = "https://worker.artemokleev.workers.dev";
-</script>
 
-<script>
+  <script>
+    window.OC_THUMBNAIL_WORKER_BASE = "https://oc-thumbnail-worker.artemokleev.workers.dev";
+  </script>
+
+  <script>
   const WORKER_BASE =
-  window.OC_THUMBNAIL_WORKER_BASE ||
-  document.documentElement.dataset.ocWorkerBase ||
-  "";
+    window.OC_THUMBNAIL_WORKER_BASE ||
+    document.documentElement.dataset.ocWorkerBase ||
+    "";
 
   const el = (id) => document.getElementById(id);
+
   const ytUrl = el("ytUrl");
   const customText = el("customText");
   const extra = el("extra");
@@ -829,120 +1079,46 @@
   const generateBtn = el("generateBtn");
   const resetBtn = el("resetBtn");
 
-  const heroBg = el("heroBg");
-  const centerMessage = el("centerMessage");
-  const modeBadge = el("modeBadge");
-  const sourceBadge = el("sourceBadge");
-  const overlayText = el("overlayText");
-
-  const downloadBtn = el("downloadBtn");
-  const copyBtn = el("copyBtn");
-  const openBtn = el("openBtn");
-  const shareBtn = el("shareBtn");
-
   const dot = el("dot");
   const statusText = el("statusText");
 
-  // dropdown elements
   const ddPos = el("ddPos");
   const ddBtnPos = el("ddBtnPos");
   const ddMenuPos = el("ddMenuPos");
   const ddValuePos = el("ddValuePos");
 
-  // demo compare elements
-  const demoStage = el("demoStage");
-  const demoCompare = el("demoCompare");
-  const demoHandle = el("demoHandle");
-  const demoLeft = el("demoLeft");
-  const demoRight = el("demoRight");
+  const youtubeThumb = el("youtubeThumb");
+  const youtubeThumbEmpty = el("youtubeThumbEmpty");
+  const youtubeTitle = el("youtubeTitle");
+  const youtubeChannelName = el("youtubeChannelName");
+  const youtubeStats = el("youtubeStats");
+  const youtubeDuration = el("youtubeDuration");
+  const channelAvatar = el("channelAvatar");
 
-  // local demo images (put these files next to index.html)
-  const DEMO_LEFT_URL = "demo-original.jpg";
-  const DEMO_RIGHT_URL = "demo-generated.jpg";
-
-  function setDemoImages(){
-    demoLeft.style.backgroundImage = `url("${DEMO_LEFT_URL}")`;
-    demoRight.style.backgroundImage = `url("${DEMO_RIGHT_URL}")`;
-  }
-  setDemoImages();
-
-  const heroBadges = el("heroBadges");
-  const heroStage = el("heroStage");
-
-  function showDemo(){
-    demoStage.classList.remove("hidden");
-    heroStage.classList.add("demoActive");
-    if(heroBadges) heroBadges.style.display = "none";
-
-    centerMessage.classList.add("hidden");
-    centerMessage.textContent = "";
-  }
-
-  function hideDemo(){
-    demoStage.classList.add("hidden");
-    heroStage.classList.remove("demoActive");
-    if(heroBadges) heroBadges.style.display = "flex";
-  }
-
-  // slider logic
-  function setSplit(pct){
-    const v = Math.max(0, Math.min(100, pct));
-    demoCompare.style.setProperty("--split", String(v));
-    demoHandle.setAttribute("aria-valuenow", String(Math.round(v)));
-  }
-  function pointerToSplit(clientX){
-    const r = demoCompare.getBoundingClientRect();
-    const x = clientX - r.left;
-    const pct = (x / r.width) * 100;
-    setSplit(pct);
-  }
-  setSplit(50);
-
-  let dragging = false;
-  demoHandle.addEventListener("pointerdown", (e) => {
-    if(demoStage.classList.contains("hidden")) return;
-    dragging = true;
-    demoHandle.setPointerCapture(e.pointerId);
-    pointerToSplit(e.clientX);
-    dismissDragHint();
-  });
-  demoHandle.addEventListener("pointermove", (e) => {
-    if(!dragging) return;
-    pointerToSplit(e.clientX);
-  });
-  demoHandle.addEventListener("pointerup", () => dragging = false);
-  demoHandle.addEventListener("pointercancel", () => dragging = false);
-
-  const dragHintEl = el("dragHint");
-  let dragHintDismissed = false;
-
-  function dismissDragHint(){
-    if(dragHintDismissed) return;
-    dragHintDismissed = true;
-    if(dragHintEl) dragHintEl.style.opacity = "0";
-  }
-
-  // NOTE: Removed auto-reset on pointerleave/blur.
-  // The curtain now stays where user left it.
-
-  // click anywhere in demo to jump handle
-  demoCompare.addEventListener("pointerdown", (e) => {
-    if(demoStage.classList.contains("hidden")) return;
-    pointerToSplit(e.clientX);
-    dismissDragHint();
-  });
+  const downloadBtn = el("downloadBtn");
+  const copyBtn = el("copyBtn");
+  const openBtn = el("openBtn");
 
   let analyzed = null;
   let generatedUrl = null;
+  let finalBlob = null;
+  let finalPreviewUrl = null;
+
+  let serverHeadline = "";
+  let serverStyle = "dramatic";
+  let serverPlacement = "bottom";
+  let serverArtDirection = null;
+
   let lastAnalyzedUrl = null;
 
   const GEN_PHRASES = [
-    "Генерируется…",
-    "Подбираем композицию…",
-    "Усиливаем читаемость…",
-    "Добавляем акценты…",
-    "Финальные штрихи…"
+    "Analyzing video…",
+    "Generating composition…",
+    "Improving readability…",
+    "Adapting typography…",
+    "Finalizing thumbnail…"
   ];
+
   let phraseTimer = null;
   let phraseIndex = 0;
 
@@ -952,40 +1128,86 @@
   }
 
   function isYouTubeUrl(u){
-    try { return /youtube\.com|youtu\.be/.test(new URL(u).hostname); }
-    catch { return false; }
-  }
-
-  function setHeroBackground(url){
-    heroBg.style.backgroundImage = url ? `url("${url}")` : "none";
-  }
-
-  function setMode(label, sourceLabel){
-    modeBadge.textContent = label;
-    sourceBadge.textContent = sourceLabel || "—";
+    try {
+      return /youtube\.com|youtu\.be/.test(new URL(u).hostname);
+    } catch {
+      return false;
+    }
   }
 
   async function fetchJson(url, opts){
     const res = await fetch(url, opts);
     const text = await res.text();
+
     let data;
-    try { data = JSON.parse(text); } catch { data = { raw: text }; }
-    if(!res.ok){
-      const msg = data?.error ? data.error : ("HTTP " + res.status + " " + text);
-      throw new Error(msg);
+    try {
+      data = JSON.parse(text);
+    } catch {
+      data = { raw: text };
     }
+
+    if(!res.ok){
+      throw new Error(data?.error ? data.error : "HTTP " + res.status + " " + text);
+    }
+
     return data;
+  }
+
+  function setActionsEnabled(enabled){
+    downloadBtn.disabled = !enabled;
+    copyBtn.disabled = !enabled;
+    openBtn.disabled = !enabled;
+  }
+
+  function setThumbImage(url){
+    if(!url){
+      youtubeThumb.style.display = "none";
+      youtubeThumb.removeAttribute("src");
+      youtubeThumbEmpty.style.display = "flex";
+      return;
+    }
+
+    youtubeThumb.src = url;
+    youtubeThumb.style.display = "block";
+    youtubeThumbEmpty.style.display = "none";
+  }
+
+  function makeAvatarLabel(name){
+    const trimmed = (name || "").trim();
+    if(!trimmed) return "AI";
+
+    const words = trimmed.split(/\s+/).filter(Boolean);
+    if(words.length === 1) return words[0].slice(0,2).toUpperCase();
+
+    return (words[0][0] + words[1][0]).toUpperCase();
+  }
+
+  function updateVideoMeta(data){
+    youtubeTitle.textContent = data?.title || "Your generated thumbnail preview will appear here";
+    youtubeChannelName.textContent = data?.author_name || "Creator Channel";
+    youtubeStats.textContent = "124K views • 3 days ago";
+    youtubeDuration.textContent = "12:48";
+    channelAvatar.textContent = makeAvatarLabel(data?.author_name || "AI");
+  }
+
+  function resetPreview(){
+    setThumbImage(null);
+    youtubeTitle.textContent = "Your generated thumbnail preview will appear here";
+    youtubeChannelName.textContent = "Creator Channel";
+    youtubeStats.textContent = "124K views • 3 days ago";
+    youtubeDuration.textContent = "12:48";
+    channelAvatar.textContent = "AI";
   }
 
   function startGeneratingPhrases(){
     stopGeneratingPhrases();
-    centerMessage.classList.remove("hidden");
     phraseIndex = 0;
-    centerMessage.textContent = GEN_PHRASES[phraseIndex];
+    setStatus("work", GEN_PHRASES[phraseIndex]);
+
     phraseTimer = setInterval(() => {
       phraseIndex = (phraseIndex + 1) % GEN_PHRASES.length;
-      centerMessage.textContent = GEN_PHRASES[phraseIndex];
-    }, 1200);
+      setStatus("work", GEN_PHRASES[phraseIndex]);
+    }, 5000);
   }
 
   function stopGeneratingPhrases(){
@@ -993,53 +1215,29 @@
     phraseTimer = null;
   }
 
-  function hideCenterMessage(){
-    centerMessage.classList.add("hidden");
-    setTimeout(() => { centerMessage.textContent = ""; }, 260);
-  }
-
-  function showCenterMessage(text){
-    stopGeneratingPhrases();
-    centerMessage.classList.remove("hidden");
-    centerMessage.textContent = text || "";
-    if(!text) centerMessage.classList.add("hidden");
-  }
-
-  function setOverlayText(text){
-    const t = (text || "").trim();
-    if(!t){
-      overlayText.style.display = "none";
-      overlayText.textContent = "";
-      return;
-    }
-    overlayText.textContent = t;
-    overlayText.style.display = "block";
-  }
-
-  function setOverlayPos(pos){
-    overlayText.classList.remove("pos-top","pos-bottom");
-    overlayText.classList.add(pos === "top" ? "pos-top" : "pos-bottom");
-  }
-
-  // ===== Custom dropdown logic =====
   function ddSet(value){
     textPosHidden.value = value;
-    ddValuePos.textContent = value === "auto" ? "Auto" : (value === "top" ? "Top" : "Bottom");
+    ddValuePos.textContent =
+      value === "auto" ? "Auto" :
+      value === "top" ? "Top" :
+      "Bottom";
 
-    [...ddMenuPos.querySelectorAll(".ddItem")].forEach(it => {
-      const active = it.dataset.value === value;
-      it.classList.toggle("active", active);
+    [...ddMenuPos.querySelectorAll(".ddItem")].forEach(item => {
+      item.classList.toggle("active", item.dataset.value === value);
     });
 
-    const headline = customText.value.trim();
-    if(generatedUrl && headline){
-      if(value === "top" || value === "bottom") setOverlayPos(value);
-      else autoPickPosFromCurrent();
+    if(generatedUrl){
+      refreshFinalPreview().catch(console.error);
     }
   }
 
-  function ddOpen(){ ddPos.classList.add("open"); }
-  function ddClose(){ ddPos.classList.remove("open"); }
+  function ddOpen(){
+    ddPos.classList.add("open");
+  }
+
+  function ddClose(){
+    ddPos.classList.remove("open");
+  }
 
   ddBtnPos.addEventListener("click", () => {
     ddPos.classList.contains("open") ? ddClose() : ddOpen();
@@ -1061,214 +1259,116 @@
   function refreshAdvanced(){
     const has = customText.value.trim().length > 0;
     advancedRow.style.display = has ? "block" : "none";
+
     if(!has) ddSet("auto");
   }
-  customText.addEventListener("input", refreshAdvanced);
+
+  customText.addEventListener("input", () => {
+    refreshAdvanced();
+    if(generatedUrl){
+      refreshFinalPreview().catch(console.error);
+    }
+  });
+
   refreshAdvanced();
 
-  // ===== Headline generation for "no custom text" mode =====
-  function makeAiHeadlineFromTitle(title){
-    if(!title) return "WATCH THIS";
-    let t = title
-      .replace(/\[[^\]]*\]|\([^\)]*\)/g, " ")
-      .replace(/[#|•·–—_]+/g, " ")
-      .replace(/[^\p{L}\p{N}\s'-]/gu, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-
-    const words = t.split(" ").filter(Boolean).slice(0, 5);
-    if(words.length === 0) return "WATCH THIS";
-
-    let headline = words.join(" ");
-    if(headline.length > 24){
-      headline = words.slice(0, 4).join(" ");
-    }
-    return headline.toUpperCase();
-  }
-
-  function buildPrompt({title, channel, hasCustomText, extraText, aiHeadline}){
-    const base = [
-      "Create a YouTube thumbnail (16:9).",
-      "Use the provided image as visual reference; preserve key elements, but improve composition and CTR.",
-      "Make it clean & premium. Crisp subject, subtle depth, soft gradient background, minimal clutter.",
-      "No watermarks, no brand logos."
+  function buildPrompt({ title, channel, extraText }){
+    const parts = [
+      `Video title: ${title || "Untitled"}`,
+      `Channel: ${channel || "Unknown"}`,
+      "Goal: make the thumbnail more clickable, more modern, more premium, and more aligned with current YouTube trends."
     ];
 
-    const textRule = hasCustomText
-      ? [
-          "IMPORTANT: Do NOT render any text in the image.",
-          "Leave clear space for overlay headline."
-        ]
-      : [
-          "IMPORTANT: You MUST render EXACTLY the following headline text ON the image.",
-          "The text must be big, high-contrast, and highly readable. 2–5 words. Clean premium style.",
-          "Do not mirror letters. Do not distort or stylize the characters into unreadable shapes.",
-          `EXACT_HEADLINE_TEXT: "${aiHeadline}"`
-        ];
-
-    const ctx = [
-      "",
-      "Video context:",
-      `- Title: ${title}`,
-      `- Channel: ${channel || "Unknown"}`
-    ];
-
-    const extraBlock = extraText ? ["", "Extra instructions:", extraText] : [];
-
-    return [...base, "", ...textRule, ...ctx, ...extraBlock].join("\n");
-  }
-
-  // ===== Auto position (simple: choose emptier zone by edge density) =====
-  async function analyzeZonesForText(imageUrl){
-    const res = await fetch(imageUrl, { mode: "cors" });
-    const blob = await res.blob();
-    const bmp = await createImageBitmap(blob);
-
-    const targetW = 320;
-    const scale = targetW / bmp.width;
-    const w = targetW;
-    const h = Math.max(1, Math.round(bmp.height * scale));
-
-    const c = document.createElement("canvas");
-    c.width = w; c.height = h;
-    const ctx = c.getContext("2d", { willReadFrequently: true });
-    ctx.drawImage(bmp, 0, 0, w, h);
-    const img = ctx.getImageData(0,0,w,h).data;
-
-    function L(ix){
-      const r = img[ix], g = img[ix+1], b = img[ix+2];
-      return (0.2126*r + 0.7152*g + 0.0722*b) / 255;
+    if (extraText) {
+      parts.push(`Extra instructions: ${extraText}`);
     }
 
-    function zoneEdge(y0, y1){
-      let edgeSum = 0, count = 0;
-      for(let y=y0; y<y1; y++){
-        for(let x=0; x<w; x++){
-          const i = (y*w + x)*4;
-          const l = L(i);
-          if(x < w-1){
-            const i2 = (y*w + (x+1))*4;
-            edgeSum += Math.abs(l - L(i2));
-          }
-          if(y < y1-1){
-            const i3 = ((y+1)*w + x)*4;
-            edgeSum += Math.abs(l - L(i3));
-          }
-          count++;
-        }
-      }
-      return edgeSum / Math.max(1,count);
-    }
-
-    const bandH = Math.round(h * 0.26);
-    const topEdge = zoneEdge(0, bandH);
-    const botEdge = zoneEdge(h - bandH, h);
-
-    return (topEdge <= botEdge) ? "top" : "bottom";
+    return parts.join("\n");
   }
-
-  async function autoPickPosFromCurrent(){
-    try{
-      const pos = await analyzeZonesForText(generatedUrl);
-      setOverlayPos(pos);
-    }catch{
-      setOverlayPos("bottom");
-    }
-  }
-
-  function resetAll(){
-    analyzed = null;
-    generatedUrl = null;
-    lastAnalyzedUrl = null;
-
-    setHeroBackground(null);
-    setOverlayText("");
-
-    generateBtn.disabled = true;
-    downloadBtn.disabled = true;
-    copyBtn.disabled = true;
-    openBtn.disabled = true;
-    shareBtn.disabled = true;
-
-    setStatus("", "Waiting for a YouTube link");
-    setMode("Demo", "Example");
-
-    // demo visible
-    showDemo();
-    showCenterMessage("");
-
-    // reset demo baseline on full reset
-    setSplit(50);
-    dragHintDismissed = false;
-    if(dragHintEl) dragHintEl.style.opacity = "0.70";
-  }
-
-  resetAll();
-
-  // Debounced auto-analyze on URL input
-  let analyzeTimer = null;
-  ytUrl.addEventListener("input", () => {
-    clearTimeout(analyzeTimer);
-    analyzeTimer = setTimeout(() => autoAnalyzeIfPossible(), 450);
-  });
-  ytUrl.addEventListener("blur", () => autoAnalyzeIfPossible());
 
   async function autoAnalyzeIfPossible(){
     const u = ytUrl.value.trim();
+
     if(!u || !isYouTubeUrl(u)){
       analyzed = null;
       generateBtn.disabled = true;
+      setActionsEnabled(false);
 
-      showDemo();
-      setHeroBackground(null);
-      setOverlayText("");
+      if(!generatedUrl){
+        resetPreview();
+      }
 
       setStatus(u ? "bad" : "", u ? "Please paste a valid YouTube URL" : "Waiting for a YouTube link");
-      setMode(u ? "Invalid URL" : "Demo", u ? "YouTube" : "Example");
-      showCenterMessage("");
-
-      // keep demo baseline when invalid/waiting
-      setSplit(50);
-      dragHintDismissed = false;
-      if(dragHintEl) dragHintEl.style.opacity = "0.70";
       return;
     }
 
     if(lastAnalyzedUrl === u && analyzed) return;
 
-    hideDemo();
     setStatus("work", "Analyzing video…");
-    setMode("Preview", "YouTube");
-    showCenterMessage("Loading preview…");
-    setOverlayText("");
 
     try{
       const data = await fetchJson(`${WORKER_BASE}/api/oembed?url=${encodeURIComponent(u)}`);
       analyzed = data;
       lastAnalyzedUrl = u;
 
-      setHeroBackground(data.thumbnail_url);
-      showCenterMessage("Preview loaded. Click Generate.");
-      setMode("Preview", "Original");
-      generateBtn.disabled = false;
+      updateVideoMeta(data);
 
+      if(!generatedUrl && data.thumbnail_url){
+        setThumbImage(data.thumbnail_url);
+      }
+
+      generateBtn.disabled = false;
       setStatus("ok", "Video analyzed. Ready to generate.");
     }catch(e){
       analyzed = null;
       generateBtn.disabled = true;
 
-      showDemo();
-      setHeroBackground(null);
-      showCenterMessage("");
-      setMode("Error", "Analyze");
+      if(!generatedUrl){
+        resetPreview();
+      }
+
       setStatus("bad", "Analyze failed");
       console.error(e);
-
-      setSplit(50);
-      dragHintDismissed = false;
-      if(dragHintEl) dragHintEl.style.opacity = "0.70";
     }
   }
+
+  function resetAll(){
+    analyzed = null;
+    generatedUrl = null;
+    finalBlob = null;
+    serverHeadline = "";
+    serverStyle = "dramatic";
+    serverPlacement = "bottom";
+    serverArtDirection = null;
+    lastAnalyzedUrl = null;
+
+    if(finalPreviewUrl){
+      URL.revokeObjectURL(finalPreviewUrl);
+      finalPreviewUrl = null;
+    }
+
+    ytUrl.value = "";
+    customText.value = "";
+    extra.value = "";
+
+    refreshAdvanced();
+    resetPreview();
+    setActionsEnabled(false);
+
+    generateBtn.disabled = true;
+    setStatus("", "Waiting for a YouTube link");
+  }
+
+  resetAll();
+
+  let analyzeTimer = null;
+
+  ytUrl.addEventListener("input", () => {
+    clearTimeout(analyzeTimer);
+    analyzeTimer = setTimeout(() => autoAnalyzeIfPossible(), 450);
+  });
+
+  ytUrl.addEventListener("blur", () => autoAnalyzeIfPossible());
 
   generateBtn.addEventListener("click", async () => {
     if(!analyzed){
@@ -1276,42 +1376,48 @@
       if(!analyzed) return;
     }
 
-    hideDemo();
-    setStatus("work", "Generating…");
-    setMode("Generating", "AI");
     startGeneratingPhrases();
-
-    const headline = (customText.value || "").trim();
-    const hasCustomText = headline.length > 0;
-
-    setOverlayText("");
-
-    const aiHeadline = hasCustomText ? "" : makeAiHeadlineFromTitle(analyzed.title || "");
 
     const prompt = buildPrompt({
       title: analyzed.title || "Untitled",
       channel: analyzed.author_name || "",
-      hasCustomText,
-      extraText: extra.value.trim(),
-      aiHeadline
+      extraText: extra.value.trim()
     });
 
     try{
       const submit = await fetchJson(`${WORKER_BASE}/api/generate`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ image_url: analyzed.thumbnail_url, prompt })
+        body: JSON.stringify({
+          image_url: analyzed.thumbnail_url,
+          prompt,
+          video_title: analyzed.title || "",
+          channel_name: analyzed.author_name || "",
+          custom_text: (customText.value || "").trim(),
+          image_size: "landscape_16_9",
+          num_images: 1,
+          max_images: 1
+        })
       });
+
+      serverHeadline = submit.headline || "";
+      serverStyle = submit.style || "dramatic";
+      serverPlacement = submit.placement || "bottom";
+      serverArtDirection = submit.art_direction || null;
 
       const statusUrl = submit.status_url || null;
       const resultUrl = submit.response_url || null;
-      if(!statusUrl || !resultUrl) throw new Error("Bad worker response (missing status_url/response_url)");
+
+      if(!statusUrl || !resultUrl){
+        throw new Error("Bad worker response");
+      }
 
       const t0 = Date.now();
       const timeoutMs = 120000;
 
       while(true){
-        await new Promise(r => setTimeout(r, 1200));
+        await new Promise(resolve => setTimeout(resolve, 1200));
+
         const st = await fetchJson(`${WORKER_BASE}/api/status?url=${encodeURIComponent(statusUrl)}`);
         const s = String(st.status || st.state || "unknown").toLowerCase();
 
@@ -1327,146 +1433,749 @@
         result?.image?.url ||
         result?.image_url ||
         null;
+
       if(!img) throw new Error("No image URL in result");
 
       generatedUrl = img;
-
-      setHeroBackground(img);
-      setMode("Result", "Generated");
+      await refreshFinalPreview();
       stopGeneratingPhrases();
-      hideCenterMessage();
-
-      if(hasCustomText){
-        setOverlayText(headline);
-
-        const choice = (textPosHidden.value || "auto");
-        if(choice === "top" || choice === "bottom"){
-          setOverlayPos(choice);
-        }else{
-          await autoPickPosFromCurrent();
-        }
-      }else{
-        setOverlayText("");
-      }
-
-      downloadBtn.disabled = false;
-      copyBtn.disabled = false;
-      openBtn.disabled = false;
-      shareBtn.disabled = false;
-
       setStatus("ok", "Done. Your thumbnail is ready.");
     }catch(e){
       stopGeneratingPhrases();
-      showCenterMessage("Failed. Try again.");
       setStatus("bad", "Generate failed");
-      setMode("Error", "Generate");
       console.error(e);
     }
   });
 
   resetBtn.addEventListener("click", () => {
-    customText.value = "";
-    extra.value = "";
-    refreshAdvanced();
     resetAll();
   });
 
-  // ---------- Canvas composition (ONLY when custom text exists) ----------
-  function wrapText(ctx, text, maxWidth){
-    const words = text.split(/\s+/).filter(Boolean);
-    if(words.length === 0) return [""];
+  function clamp(v, min, max){
+    return Math.max(min, Math.min(max, v));
+  }
 
-    const lines = [];
-    let line = words[0];
+  function roundRect(ctx, x, y, w, h, r){
+    const rr = Math.min(r, w / 2, h / 2);
+    ctx.beginPath();
+    ctx.moveTo(x + rr, y);
+    ctx.arcTo(x + w, y, x + w, y + h, rr);
+    ctx.arcTo(x + w, y + h, x, y + h, rr);
+    ctx.arcTo(x, y + h, x, y, rr);
+    ctx.arcTo(x, y, x + w, y, rr);
+    ctx.closePath();
+  }
 
-    for(let i=1;i<words.length;i++){
-      const test = line + " " + words[i];
-      if(ctx.measureText(test).width <= maxWidth){
-        line = test;
-      }else{
-        lines.push(line);
-        line = words[i];
+  function hexToRgb(hex){
+    const s = String(hex || "").trim();
+    const m = s.match(/^#([0-9a-fA-F]{6})$/);
+    if(!m) return null;
+    const v = m[1];
+    return {
+      r: parseInt(v.slice(0, 2), 16),
+      g: parseInt(v.slice(2, 4), 16),
+      b: parseInt(v.slice(4, 6), 16)
+    };
+  }
+
+  function rgbaFromHex(hex, a, fallback = "rgba(255,255,255,1)"){
+    const rgb = hexToRgb(hex);
+    if(!rgb) return fallback;
+    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${a})`;
+  }
+
+  function rgbToHsl(r, g, b){
+    r /= 255;
+    g /= 255;
+    b /= 255;
+
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    let h, s;
+    const l = (max + min) / 2;
+
+    if(max === min){
+      h = s = 0;
+    }else{
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch(max){
+        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+        case g: h = (b - r) / d + 2; break;
+        default: h = (r - g) / d + 4; break;
+      }
+
+      h /= 6;
+    }
+
+    return {
+      h: h * 360,
+      s: s * 100,
+      l: l * 100
+    };
+  }
+
+  function sampleRegionStats(ctx, x, y, w, h){
+    let data;
+    try{
+      data = ctx.getImageData(x, y, w, h).data;
+    }catch{
+      return {
+        brightness: 128,
+        contrast: 40,
+        edge: 22,
+        avgRgb: { r: 180, g: 180, b: 180 },
+        hsl: { h: 0, s: 0, l: 50 }
+      };
+    }
+
+    let sum = 0;
+    let sumSq = 0;
+    let count = 0;
+    let rSum = 0;
+    let gSum = 0;
+    let bSum = 0;
+
+    const stride = 4 * 6;
+
+    for(let i = 0; i < data.length; i += stride){
+      const r = data[i];
+      const g = data[i + 1];
+      const b = data[i + 2];
+      const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+
+      sum += lum;
+      sumSq += lum * lum;
+      rSum += r;
+      gSum += g;
+      bSum += b;
+      count++;
+    }
+
+    const brightness = sum / Math.max(1, count);
+    const variance = Math.max(0, sumSq / Math.max(1, count) - brightness * brightness);
+    const contrast = Math.sqrt(variance);
+
+    const avgRgb = {
+      r: Math.round(rSum / Math.max(1, count)),
+      g: Math.round(gSum / Math.max(1, count)),
+      b: Math.round(bSum / Math.max(1, count))
+    };
+
+    const hsl = rgbToHsl(avgRgb.r, avgRgb.g, avgRgb.b);
+
+    const gridStep = 10;
+    const cols = Math.max(3, Math.floor(w / gridStep));
+    const rows = Math.max(3, Math.floor(h / gridStep));
+
+    const gray = [];
+
+    for(let row = 0; row < rows; row++){
+      const arr = [];
+      for(let col = 0; col < cols; col++){
+        const px = Math.min(w - 1, Math.floor(col * w / cols));
+        const py = Math.min(h - 1, Math.floor(row * h / rows));
+        const idx = ((py * w) + px) * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+        arr.push(0.2126 * r + 0.7152 * g + 0.0722 * b);
+      }
+      gray.push(arr);
+    }
+
+    let edgeAcc = 0;
+    let edgeCount = 0;
+
+    for(let yy = 1; yy < gray.length - 1; yy++){
+      for(let xx = 1; xx < gray[yy].length - 1; xx++){
+        const gx = gray[yy][xx + 1] - gray[yy][xx - 1];
+        const gy = gray[yy + 1][xx] - gray[yy - 1][xx];
+        edgeAcc += Math.sqrt(gx * gx + gy * gy);
+        edgeCount++;
       }
     }
-    lines.push(line);
 
-    if(lines.length <= 2) return lines;
+    const edge = edgeAcc / Math.max(1, edgeCount);
 
-    const mid = Math.ceil(words.length / 2);
-    return [words.slice(0, mid).join(" "), words.slice(mid).join(" ")];
+    return {
+      brightness,
+      contrast,
+      edge,
+      avgRgb,
+      hsl
+    };
+  }
+
+  function wrapTextBalanced(ctx, text, maxWidth, maxLines = 3){
+    const words = String(text || "").split(/\s+/).filter(Boolean);
+    if(!words.length) return [""];
+
+    let lines = [];
+    let current = words[0];
+
+    for(let i = 1; i < words.length; i++){
+      const next = current + " " + words[i];
+      if(ctx.measureText(next).width <= maxWidth){
+        current = next;
+      }else{
+        lines.push(current);
+        current = words[i];
+      }
+    }
+
+    lines.push(current);
+
+    if(lines.length <= maxLines){
+      return lines;
+    }
+
+    const out = [];
+    const totalWords = words.length;
+    let cursor = 0;
+
+    for(let i = 0; i < maxLines; i++){
+      const remainWords = totalWords - cursor;
+      const remainLines = maxLines - i;
+      const take = Math.ceil(remainWords / remainLines);
+      out.push(words.slice(cursor, cursor + take).join(" "));
+      cursor += take;
+    }
+
+    return out;
+  }
+
+  function detectHeadlineMood(text){
+    const t = String(text || "").toLowerCase();
+
+    if(
+      t.includes("vs") ||
+      t.includes("battle") ||
+      t.includes("best") ||
+      t.includes("worst") ||
+      t.includes("rank") ||
+      t.includes("pro") ||
+      t.includes("why")
+    ){
+      return "bold";
+    }
+
+    if(
+      t.includes("night") ||
+      t.includes("cinematic") ||
+      t.includes("story") ||
+      t.includes("secret") ||
+      t.includes("luck") ||
+      t.includes("runs out") ||
+      t.includes("dark")
+    ){
+      return "cinematic";
+    }
+
+    if(
+      t.includes("gaming") ||
+      t.includes("win") ||
+      t.includes("insane") ||
+      t.includes("crazy")
+    ){
+      return "gaming";
+    }
+
+    return "neutral";
+  }
+
+  function normalizeArtDirection(raw){
+    const defaults = {
+      text_layout: "top-center",
+      font_style: serverStyle || "dramatic",
+      accent_color: "#ffffff",
+      accent_color_2: "#ffd36a",
+      text_case: "uppercase",
+      plate: "none",
+      stroke_strength: 0.72,
+      shadow_strength: 0.42,
+      tracking: 0.015,
+      max_width_ratio: 0.62,
+      focus_priority: "keep_subject_clear",
+      avoid_zones: ["subject_center", "faces", "main_object"],
+      font_weight: 900
+    };
+
+    if(!raw || typeof raw !== "object") return defaults;
+
+    const allowedLayouts = new Set([
+      "top-left", "top-center", "top-right",
+      "left-center", "center", "right-center",
+      "bottom-left", "bottom-center", "bottom-right"
+    ]);
+
+    const allowedStyles = new Set(["dramatic", "bold", "minimal", "gaming", "cinematic"]);
+    const allowedPlate = new Set(["none", "soft", "strong"]);
+    const allowedCase = new Set(["uppercase", "title", "original"]);
+
+    return {
+      text_layout: allowedLayouts.has(raw.text_layout) ? raw.text_layout : defaults.text_layout,
+      font_style: allowedStyles.has(raw.font_style) ? raw.font_style : defaults.font_style,
+      accent_color: /^#([0-9a-fA-F]{6})$/.test(raw.accent_color || "") ? raw.accent_color : defaults.accent_color,
+      accent_color_2: /^#([0-9a-fA-F]{6})$/.test(raw.accent_color_2 || "") ? raw.accent_color_2 : defaults.accent_color_2,
+      text_case: allowedCase.has(raw.text_case) ? raw.text_case : defaults.text_case,
+      plate: allowedPlate.has(raw.plate) ? raw.plate : defaults.plate,
+      stroke_strength: clamp(Number(raw.stroke_strength) || defaults.stroke_strength, 0, 1),
+      shadow_strength: clamp(Number(raw.shadow_strength) || defaults.shadow_strength, 0, 1),
+      tracking: clamp(Number(raw.tracking) || defaults.tracking, 0, 0.12),
+      max_width_ratio: clamp(Number(raw.max_width_ratio) || defaults.max_width_ratio, 0.28, 0.80),
+      focus_priority: String(raw.focus_priority || defaults.focus_priority),
+      avoid_zones: Array.isArray(raw.avoid_zones) ? raw.avoid_zones.slice(0, 6) : defaults.avoid_zones,
+      font_weight: Math.round(clamp(Number(raw.font_weight) || defaults.font_weight, 500, 950))
+    };
+  }
+
+  function applyTextCase(text, textCase){
+    const t = String(text || "").trim();
+    if(!t) return t;
+
+    if(textCase === "uppercase"){
+      return t.toUpperCase();
+    }
+
+    if(textCase === "title"){
+      return t
+        .toLowerCase()
+        .replace(/\b\w/g, ch => ch.toUpperCase());
+    }
+
+    return t;
+  }
+
+  function pickZoneFromLayout(ctx, w, h, layout){
+    const map = {
+      "top-left":     { rx: 0.05, ry: 0.05, rw: 0.34, rh: 0.24, align: "left",   ax: 0.09, ay: 0.17, vertical: "top" },
+      "top-center":   { rx: 0.18, ry: 0.05, rw: 0.64, rh: 0.22, align: "center", ax: 0.50, ay: 0.17, vertical: "top" },
+      "top-right":    { rx: 0.61, ry: 0.05, rw: 0.34, rh: 0.24, align: "right",  ax: 0.91, ay: 0.17, vertical: "top" },
+
+      "left-center":  { rx: 0.04, ry: 0.33, rw: 0.34, rh: 0.28, align: "left",   ax: 0.09, ay: 0.54, vertical: "center" },
+      "center":       { rx: 0.20, ry: 0.33, rw: 0.60, rh: 0.28, align: "center", ax: 0.50, ay: 0.54, vertical: "center" },
+      "right-center": { rx: 0.62, ry: 0.33, rw: 0.34, rh: 0.28, align: "right",  ax: 0.91, ay: 0.54, vertical: "center" },
+
+      "bottom-left":  { rx: 0.05, ry: 0.64, rw: 0.34, rh: 0.24, align: "left",   ax: 0.09, ay: 0.81, vertical: "bottom" },
+      "bottom-center":{ rx: 0.18, ry: 0.64, rw: 0.64, rh: 0.22, align: "center", ax: 0.50, ay: 0.81, vertical: "bottom" },
+      "bottom-right": { rx: 0.61, ry: 0.64, rw: 0.34, rh: 0.24, align: "right",  ax: 0.91, ay: 0.81, vertical: "bottom" }
+    };
+
+    const z = map[layout] || map["top-center"];
+
+    const x = Math.floor(w * z.rx);
+    const y = Math.floor(h * z.ry);
+    const zw = Math.floor(w * z.rw);
+    const zh = Math.floor(h * z.rh);
+
+    return {
+      name: layout,
+      align: z.align,
+      vertical: z.vertical,
+      anchorX: w * z.ax,
+      anchorY: h * z.ay,
+      boxW: w * z.rw,
+      stats: sampleRegionStats(ctx, x, y, zw, zh)
+    };
+  }
+
+  function chooseAutoZone(ctx, w, h){
+    const zones = [
+      "top-left", "top-center", "top-right",
+      "left-center",
+      "right-center",
+      "bottom-left", "bottom-center", "bottom-right"
+    ];
+
+    let best = null;
+
+    for(const layout of zones){
+      const zone = pickZoneFromLayout(ctx, w, h, layout);
+      const s = zone.stats;
+
+      const edgePenalty = s.edge * 2.4;
+      const contrastPenalty = s.contrast * 1.15;
+      const brightnessPenalty = Math.abs(s.brightness - 118) * 0.95;
+
+      let score = 320 - edgePenalty - contrastPenalty - brightnessPenalty;
+
+      if(layout.includes("left") || layout.includes("right")) score += 6;
+      if(layout === "top-center" || layout === "bottom-center") score += 2;
+      if(s.brightness < 70 || s.brightness > 225) score -= 14;
+
+      if(!best || score > best.score){
+        best = { ...zone, score };
+      }
+    }
+
+    return best || pickZoneFromLayout(ctx, w, h, "top-center");
+  }
+
+  function chooseZone(ctx, w, h, hasManualHeadline, art){
+    if(hasManualHeadline && textPosHidden.value === "top"){
+      return pickZoneFromLayout(ctx, w, h, "top-center");
+    }
+
+    if(hasManualHeadline && textPosHidden.value === "bottom"){
+      return pickZoneFromLayout(ctx, w, h, "bottom-center");
+    }
+
+    if(art?.text_layout){
+      return pickZoneFromLayout(ctx, w, h, art.text_layout);
+    }
+
+    return chooseAutoZone(ctx, w, h);
+  }
+
+  function resolveVisualStyle(styleFromArt, zoneStats, headline){
+    const mood = detectHeadlineMood(headline);
+
+    if(styleFromArt && styleFromArt !== "dramatic"){
+      return styleFromArt;
+    }
+
+    if(mood === "gaming") return "gaming";
+    if(mood === "bold") return "dramatic";
+    if(zoneStats.brightness < 95) return "dramatic";
+    if(zoneStats.brightness < 135) return "cinematic";
+    return "minimal";
+  }
+
+  function buildAdaptiveTextStyle(styleName, zoneStats, imageStats, headline, art){
+    const mood = detectHeadlineMood(headline);
+    const brightness = zoneStats.brightness;
+    const isDark = brightness < 135;
+
+    const warm = imageStats.hsl.h >= 12 && imageStats.hsl.h <= 55 && imageStats.hsl.s > 40;
+    const cool = imageStats.hsl.h >= 180 && imageStats.hsl.h <= 240 && imageStats.hsl.s > 28;
+
+    let fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
+    let fillTop = art?.accent_color || "#ffffff";
+    let fillBottom = art?.accent_color_2 || "#f2f2f2";
+    let stroke = isDark ? "rgba(0,0,0,0.82)" : "rgba(0,0,0,0.54)";
+    let shadow = isDark ? "rgba(0,0,0,0.34)" : "rgba(0,0,0,0.16)";
+    let strokeMul = 0.085;
+    let shadowBlurMul = 0.11;
+    let plate = "rgba(0,0,0,0.18)";
+    let glow = null;
+    let glowBlurMul = 0.22;
+    let tracking = 0;
+    let fontWeight = art?.font_weight || 900;
+
+    if(styleName === "minimal"){
+      fontFamily = 'system-ui, "Segoe UI", Arial, sans-serif';
+      if(!art?.accent_color) fillTop = "#ffffff";
+      if(!art?.accent_color_2) fillBottom = isDark ? "#eef5ff" : "#ffffff";
+      stroke = isDark ? "rgba(0,0,0,0.42)" : "rgba(0,0,0,0.20)";
+      shadow = isDark ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.08)";
+      strokeMul = 0.045;
+      shadowBlurMul = 0.06;
+      plate = isDark ? "rgba(0,0,0,0.14)" : "rgba(12,16,24,0.10)";
+    }
+
+    if(styleName === "cinematic" || mood === "cinematic"){
+      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
+      if(!art?.accent_color) fillTop = "#ffffff";
+      if(!art?.accent_color_2) fillBottom = cool ? "#dff3ff" : warm ? "#ffe6b8" : "#dbe6ff";
+      stroke = "rgba(8,12,18,0.76)";
+      shadow = "rgba(0,0,0,0.24)";
+      strokeMul = 0.072;
+      shadowBlurMul = 0.10;
+      plate = "rgba(7,11,18,0.16)";
+      tracking = 0.02;
+    }
+
+    if(styleName === "gaming" || mood === "gaming"){
+      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
+      if(!art?.accent_color) fillTop = "#ffffff";
+      if(!art?.accent_color_2) fillBottom = cool ? "#79ecff" : "#ff79da";
+      stroke = "rgba(7,10,22,0.88)";
+      shadow = "rgba(0,0,0,0.34)";
+      strokeMul = 0.085;
+      shadowBlurMul = 0.15;
+      plate = "rgba(7,10,22,0.20)";
+      glow = cool ? "rgba(110,236,255,0.34)" : "rgba(255,120,218,0.28)";
+      tracking = 0.01;
+    }
+
+    if(styleName === "dramatic" || mood === "bold" || styleName === "bold"){
+      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
+      if(!art?.accent_color) fillTop = warm ? "#fffaf0" : "#ffffff";
+      if(!art?.accent_color_2) fillBottom = warm ? "#ffd45a" : "#ffffff";
+      stroke = "rgba(0,0,0,0.80)";
+      shadow = "rgba(0,0,0,0.32)";
+      strokeMul = 0.09;
+      shadowBlurMul = 0.12;
+      plate = "rgba(0,0,0,0.18)";
+      tracking = 0.008;
+    }
+
+    if(typeof art?.tracking === "number"){
+      tracking = art.tracking * 1000;
+    }
+
+    if(typeof art?.stroke_strength === "number"){
+      const s = art.stroke_strength;
+      strokeMul = 0.02 + s * 0.11;
+    }
+
+    if(typeof art?.shadow_strength === "number"){
+      const s = art.shadow_strength;
+      shadowBlurMul = 0.03 + s * 0.17;
+    }
+
+    if(art?.plate === "soft"){
+      plate = isDark ? "rgba(0,0,0,0.16)" : "rgba(9,12,20,0.10)";
+    }else if(art?.plate === "strong"){
+      plate = isDark ? "rgba(0,0,0,0.28)" : "rgba(8,12,20,0.18)";
+    }
+
+    return {
+      fontFamily,
+      fillTop,
+      fillBottom,
+      stroke,
+      shadow,
+      strokeMul,
+      shadowBlurMul,
+      plate,
+      glow,
+      glowBlurMul,
+      tracking,
+      fontWeight
+    };
+  }
+
+  function shouldUseCompactPlate(zoneStats, styleName, lineCount, art){
+    if(art?.plate === "none") return false;
+    if(art?.plate === "soft" || art?.plate === "strong") return true;
+
+    if(styleName === "minimal"){
+      return zoneStats.edge > 24 || zoneStats.contrast > 56 || lineCount >= 3;
+    }
+
+    return zoneStats.edge > 27 || zoneStats.contrast > 62 || lineCount >= 3;
+  }
+
+  function drawTextLine(ctx, text, x, y, tracking){
+    if(!tracking){
+      ctx.strokeText(text, x, y);
+      ctx.fillText(text, x, y);
+      return;
+    }
+
+    const chars = [...text];
+    const widths = chars.map(ch => ctx.measureText(ch).width);
+    const totalWidth = widths.reduce((a, b) => a + b, 0) + Math.max(0, chars.length - 1) * tracking;
+    let cursor = x;
+
+    if(ctx.textAlign === "center"){
+      cursor = x - totalWidth / 2;
+    }else if(ctx.textAlign === "right"){
+      cursor = x - totalWidth;
+    }
+
+    for(let i = 0; i < chars.length; i++){
+      const ch = chars[i];
+      const drawX = cursor + widths[i] / 2;
+
+      const prevAlign = ctx.textAlign;
+      ctx.textAlign = "center";
+      ctx.strokeText(ch, drawX, y);
+      ctx.fillText(ch, drawX, y);
+      ctx.textAlign = prevAlign;
+
+      cursor += widths[i] + tracking;
+    }
   }
 
   async function composeFinalBlob(){
     if(!generatedUrl) throw new Error("No generated image");
 
-    const headline = (customText.value || "").trim();
-    const hasCustomText = headline.length > 0;
+    const manualHeadline = (customText.value || "").trim();
+    const autoHeadline = serverHeadline || "";
+    let headline = manualHeadline || autoHeadline;
 
-    const res0 = await fetch(generatedUrl, { mode: "cors" });
-    const baseBlob = await res0.blob();
-    if(!hasCustomText) return baseBlob;
+    const res = await fetch(generatedUrl, { mode: "cors" });
+    const baseBlob = await res.blob();
+
+    if(!headline) return baseBlob;
 
     const bmp = await createImageBitmap(baseBlob);
-    const w = bmp.width, h = bmp.height;
+    const w = bmp.width;
+    const h = bmp.height;
 
     const canvas = document.createElement("canvas");
     canvas.width = w;
     canvas.height = h;
-    const ctx = canvas.getContext("2d");
 
+    const ctx = canvas.getContext("2d");
     ctx.drawImage(bmp, 0, 0, w, h);
 
-    const pos = overlayText.classList.contains("pos-top") ? "top" : "bottom";
+    const art = normalizeArtDirection(serverArtDirection);
+    headline = applyTextCase(headline, manualHeadline ? "uppercase" : art.text_case);
 
-    const padX = Math.round(w * 0.06);
-    const maxTextWidth = w - padX*2;
+    const imageStats = sampleRegionStats(ctx, 0, 0, w, h);
+    const zone = chooseZone(ctx, w, h, !!manualHeadline, art);
 
-    let fontSize = Math.round(h * 0.14);
-    fontSize = Math.min(fontSize, 150);
-    fontSize = Math.max(fontSize, 48);
+    const styleName = manualHeadline
+      ? "dramatic"
+      : resolveVisualStyle(art.font_style || serverStyle, zone.stats, headline);
 
-    const fontFamily = 'Impact, Arial Black, system-ui, sans-serif';
+    const maxWidthRatio = manualHeadline
+      ? (textPosHidden.value === "auto" ? art.max_width_ratio : 0.68)
+      : art.max_width_ratio;
 
+    let fontSize = Math.round(h * (styleName === "minimal" ? 0.088 : 0.104));
+    fontSize = clamp(fontSize, 28, 122);
+
+    const maxTextWidth = Math.round(w * maxWidthRatio);
     let lines = [];
-    while(fontSize > 28){
-      ctx.font = `900 ${fontSize}px ${fontFamily}`;
-      lines = wrapText(ctx, headline, maxTextWidth);
-      const ok = lines.every(l => ctx.measureText(l).width <= maxTextWidth);
-      if(ok) break;
-      fontSize -= 4;
+
+    while(fontSize > 24){
+      const fontFamilyForMeasure =
+        styleName === "minimal"
+          ? 'system-ui, "Segoe UI", Arial, sans-serif'
+          : '"Arial Black", Impact, system-ui, sans-serif';
+
+      ctx.font = `${art.font_weight || 900} ${fontSize}px ${fontFamilyForMeasure}`;
+      lines = wrapTextBalanced(
+        ctx,
+        headline,
+        maxTextWidth,
+        zone.align === "center" ? 3 : 2
+      );
+
+      const fits = lines.every(line => ctx.measureText(line).width <= maxTextWidth);
+      if(fits) break;
+
+      fontSize -= 3;
     }
 
-    const lineHeight = Math.round(fontSize * 0.92);
-    const blockHeight = lines.length * lineHeight;
+    if(lines.length > 3){
+      lines = lines.slice(0, 2).concat([lines.slice(2).join(" ")]);
+    }
 
-    const yTop = Math.round(h * 0.18);
-    const yBottom = Math.round(h * 0.90);
+    const style = buildAdaptiveTextStyle(styleName, zone.stats, imageStats, headline, art);
+    const lineHeight = Math.round(fontSize * (styleName === "minimal" ? 1.04 : 0.92));
+    const blockHeight = lineHeight * lines.length;
+    const compactPlate = shouldUseCompactPlate(zone.stats, styleName, lines.length, art);
 
-    let yStart = (pos === "top") ? yTop : (yBottom - blockHeight + lineHeight);
-
-    ctx.textAlign = "center";
+    ctx.font = `${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
     ctx.textBaseline = "alphabetic";
     ctx.lineJoin = "round";
+    ctx.miterLimit = 2;
 
-    const strokeW = Math.max(7, Math.round(fontSize * 0.11));
-    ctx.lineWidth = strokeW;
-    ctx.strokeStyle = "rgba(0,0,0,0.60)";
-    ctx.fillStyle = "rgba(255,255,255,0.98)";
+    const metrics = lines.map(line => ctx.measureText(line).width);
+    const widest = Math.max(...metrics, 0);
+
+    const padX = Math.round(fontSize * (compactPlate ? 0.24 : 0.12));
+    const padY = Math.round(fontSize * (compactPlate ? 0.18 : 0.08));
+    const plateW = widest + padX * 2;
+    const plateH = blockHeight + padY * 2;
+
+    ctx.textAlign = zone.align;
+
+    const x = zone.anchorX;
+
+    let yStart;
+    if(zone.vertical === "top"){
+      yStart = zone.anchorY + lineHeight * 0.12;
+    }else if(zone.vertical === "bottom"){
+      yStart = zone.anchorY - blockHeight + lineHeight;
+    }else{
+      yStart = zone.anchorY - blockHeight / 2 + lineHeight * 0.78;
+    }
+
+    yStart = clamp(yStart, lineHeight + h * 0.04, h - h * 0.05 - blockHeight + lineHeight);
+
+    if(compactPlate){
+      let plateX;
+      if(zone.align === "left"){
+        plateX = x - padX;
+      }else if(zone.align === "right"){
+        plateX = x - widest - padX;
+      }else{
+        plateX = x - plateW / 2;
+      }
+
+      const plateY = yStart - lineHeight + fontSize * 0.08 - padY;
+      const radius = Math.round(fontSize * 0.22);
+
+      const plateAlphaTop = art.plate === "strong" ? 0.34 : 0.18;
+      const plateAlphaBottom = art.plate === "strong" ? 0.22 : 0.10;
+
+      const plateGrad = ctx.createLinearGradient(plateX, plateY, plateX, plateY + plateH);
+      plateGrad.addColorStop(0, rgbaFromHex(art.accent_color, Math.min(0.18, plateAlphaTop), style.plate));
+      plateGrad.addColorStop(1, rgbaFromHex(art.accent_color_2, Math.min(0.12, plateAlphaBottom), style.plate));
+
+      ctx.save();
+      ctx.shadowColor = "rgba(0,0,0,0.14)";
+      ctx.shadowBlur = Math.round(fontSize * 0.16);
+      ctx.shadowOffsetY = Math.round(fontSize * 0.04);
+      ctx.fillStyle = plateGrad;
+      roundRect(ctx, plateX, plateY, plateW, plateH, radius);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    const fillGrad = ctx.createLinearGradient(0, yStart - lineHeight, 0, yStart + blockHeight);
+    fillGrad.addColorStop(0, style.fillTop);
+    fillGrad.addColorStop(1, style.fillBottom);
+
+    ctx.fillStyle = fillGrad;
+    ctx.strokeStyle = style.stroke;
+    ctx.lineWidth = Math.max(1.5, Math.round(fontSize * style.strokeMul));
+
+    if(style.glow){
+      ctx.shadowColor = style.glow;
+      ctx.shadowBlur = Math.max(8, Math.round(fontSize * style.glowBlurMul));
+      ctx.shadowOffsetY = 0;
+    }else{
+      ctx.shadowColor = style.shadow;
+      ctx.shadowBlur = Math.max(3, Math.round(fontSize * style.shadowBlurMul));
+      ctx.shadowOffsetY = Math.max(1, Math.round(fontSize * 0.03));
+    }
 
     let y = yStart;
     for(const line of lines){
-      const x = Math.round(w/2);
-      ctx.strokeText(line, x, y);
-      ctx.fillText(line, x, y);
+      drawTextLine(ctx, line, x, y, style.tracking);
       y += lineHeight;
     }
 
-    return await new Promise((resolve) => canvas.toBlob(resolve, "image/png", 0.95));
+    ctx.shadowColor = "transparent";
+    ctx.shadowBlur = 0;
+    ctx.shadowOffsetY = 0;
+
+    return await new Promise(resolve => canvas.toBlob(resolve, "image/png", 0.95));
   }
 
-  downloadBtn.addEventListener("click", async () => {
+  async function refreshFinalPreview(){
+    if(!generatedUrl) return;
+
+    const blob = await composeFinalBlob();
+    if(!blob) return;
+
+    finalBlob = blob;
+
+    if(finalPreviewUrl){
+      URL.revokeObjectURL(finalPreviewUrl);
+      finalPreviewUrl = null;
+    }
+
+    finalPreviewUrl = URL.createObjectURL(blob);
+    setThumbImage(finalPreviewUrl);
+    setActionsEnabled(true);
+  }
+
+  async function onDownload(){
     try{
-      const finalBlob = await composeFinalBlob();
+      if(!finalBlob){
+        await refreshFinalPreview();
+      }
+
       const objectUrl = URL.createObjectURL(finalBlob);
 
       const a = document.createElement("a");
@@ -1478,57 +2187,66 @@
 
       setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
     }catch(e){
-      window.open(generatedUrl, "_blank", "noopener,noreferrer");
+      if(finalPreviewUrl){
+        window.open(finalPreviewUrl, "_blank", "noopener,noreferrer");
+      }else if(generatedUrl){
+        window.open(generatedUrl, "_blank", "noopener,noreferrer");
+      }
     }
-  });
+  }
 
-  copyBtn.addEventListener("click", async () => {
+  async function onCopy(){
     if(!generatedUrl) return;
 
     try{
-      const finalBlob = await composeFinalBlob();
+      if(!finalBlob){
+        await refreshFinalPreview();
+      }
 
       if(!navigator.clipboard || !window.ClipboardItem){
         await navigator.clipboard.writeText(generatedUrl);
-        setStatus("ok", "Clipboard image not supported — link copied.");
+        setStatus("ok", "Clipboard image not supported — image URL copied.");
         setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 1200);
         return;
       }
 
       const item = new ClipboardItem({ [finalBlob.type]: finalBlob });
       await navigator.clipboard.write([item]);
+
       setStatus("ok", "Image copied to clipboard.");
       setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 900);
     }catch{
       await navigator.clipboard.writeText(generatedUrl);
-      setStatus("ok", "Copy failed — link copied.");
+      setStatus("ok", "Copy failed — image URL copied.");
       setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 1200);
     }
-  });
+  }
 
-  openBtn.addEventListener("click", async () => {
+  async function onOpen(){
     if(!generatedUrl) return;
-
-    const hasCustomText = (customText.value || "").trim().length > 0;
 
     try{
-      if(hasCustomText){
-        const finalBlob = await composeFinalBlob();
-        const objectUrl = URL.createObjectURL(finalBlob);
-        window.open(objectUrl, "_blank", "noopener,noreferrer");
-        setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
-        return;
+      if(!finalBlob){
+        await refreshFinalPreview();
       }
-    }catch{}
 
-    window.open(generatedUrl, "_blank", "noopener,noreferrer");
-  });
+      const objectUrl = URL.createObjectURL(finalBlob);
+      window.open(objectUrl, "_blank", "noopener,noreferrer");
+      setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
+    }catch{
+      window.open(finalPreviewUrl || generatedUrl, "_blank", "noopener,noreferrer");
+    }
+  }
 
-  shareBtn.addEventListener("click", async () => {
-    if(!generatedUrl) return;
-    await navigator.clipboard.writeText(generatedUrl);
-    setStatus("ok", "Link copied to clipboard.");
-    setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 900);
+  downloadBtn.addEventListener("click", onDownload);
+  copyBtn.addEventListener("click", onCopy);
+  openBtn.addEventListener("click", onOpen);
+
+  document.querySelectorAll(".exampleCard").forEach(btn => {
+    btn.addEventListener("click", () => {
+      ytUrl.value = btn.dataset.url || "";
+      ytUrl.dispatchEvent(new Event("input", { bubbles:true }));
+    });
   });
 </script>
 </body>
