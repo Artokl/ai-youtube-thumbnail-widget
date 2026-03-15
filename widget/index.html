@@ -849,7 +849,7 @@
 
     <div class="subtitle">
       Paste a public YouTube link and generate a more clickable thumbnail.
-      Add your own text or let AI suggest a short headline.
+      AI analyzes the video context, writes a short clickbait text, and generates a redesigned thumbnail with the text rendered directly inside the image.
     </div>
 
     <div class="shell">
@@ -861,28 +861,7 @@
               <input id="ytUrl" type="text" placeholder="https://www.youtube.com/watch?v=..." />
 
               <label>Custom text (optional)</label>
-              <input id="customText" type="text" placeholder="e.g. I Tried X For 30 Days" />
-
-              <div class="advancedRow" id="advancedRow">
-                <div class="advLabel">Text position</div>
-
-                <div class="dd" id="ddPos">
-                  <button class="ddBtn" id="ddBtnPos" type="button">
-                    <span id="ddValuePos">Auto</span>
-                    <svg class="chev" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                      <path d="M7 10l5 5 5-5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </button>
-
-                  <div class="ddMenu" id="ddMenuPos" role="menu" aria-label="Text position">
-                    <div class="ddItem active" data-value="auto">Auto <span class="ddTick">✓</span></div>
-                    <div class="ddItem" data-value="top">Top <span class="ddTick">✓</span></div>
-                    <div class="ddItem" data-value="bottom">Bottom <span class="ddTick">✓</span></div>
-                  </div>
-                </div>
-
-                <input id="textPos" type="hidden" value="auto" />
-              </div>
+              <input id="customText" type="text" placeholder="e.g. THIS CHANGED EVERYTHING" />
 
               <label>Extra instructions (optional)</label>
               <textarea id="extra" placeholder="e.g. bold, bright, premium, modern YouTube style, strong contrast, clean subject"></textarea>
@@ -893,8 +872,8 @@
               </div>
 
               <div class="hint">
-                If Custom text is empty — AI generates a short thematic headline.<br />
-                If Custom text is provided — it will be applied exactly as overlay text.
+                If Custom text is empty — AI generates a short clickbait hook, usually 2–4 words.<br />
+                If Custom text is provided — it is sent as highest-priority text for the final image itself.
               </div>
             </div>
 
@@ -998,7 +977,7 @@
                   </div>
                 </button>
 
-                <button class="exampleCard tutorial" type="button" data-url="https://www.youtube.com/watch?v=qfHX2cNA4MY">
+                <button class="exampleCard tutorial" type="button" data-url="https://www.youtube.com/watch?v=O_ochkV-B8Q">
                   <div class="exampleCardInner">
                     <div class="exampleTag">🎓</div>
                     <div class="exampleName">Tutorial</div>
@@ -1074,18 +1053,12 @@
   const customText = el("customText");
   const extra = el("extra");
   const advancedRow = el("advancedRow");
-  const textPosHidden = el("textPos");
 
   const generateBtn = el("generateBtn");
   const resetBtn = el("resetBtn");
 
   const dot = el("dot");
   const statusText = el("statusText");
-
-  const ddPos = el("ddPos");
-  const ddBtnPos = el("ddBtnPos");
-  const ddMenuPos = el("ddMenuPos");
-  const ddValuePos = el("ddValuePos");
 
   const youtubeThumb = el("youtubeThumb");
   const youtubeThumbEmpty = el("youtubeThumbEmpty");
@@ -1101,33 +1074,27 @@
 
   let analyzed = null;
   let generatedUrl = null;
-  let finalBlob = null;
-  let finalPreviewUrl = null;
-
-  let serverHeadline = "";
-  let serverStyle = "dramatic";
-  let serverPlacement = "bottom";
-  let serverArtDirection = null;
-
+  let generatedBlob = null;
+  let generatedObjectUrl = null;
   let lastAnalyzedUrl = null;
+  let aiPlan = null;
 
   const GEN_PHRASES = [
-    "Analyzing video…",
-    "Generating composition…",
-    "Improving readability…",
-    "Adapting typography…",
-    "Finalizing thumbnail…"
-  ];
+    "Analyzing video context…",
+    "Preparing your thumbnail…",
+    "Creating a better thumbnail…",
+    "Generating the final image…"
+];
 
   let phraseTimer = null;
   let phraseIndex = 0;
 
-  function setStatus(kind, text){
+  function setStatus(kind, text) {
     dot.className = "dot " + (kind || "");
     statusText.textContent = text;
   }
 
-  function isYouTubeUrl(u){
+  function isYouTubeUrl(u) {
     try {
       return /youtube\.com|youtu\.be/.test(new URL(u).hostname);
     } catch {
@@ -1135,32 +1102,39 @@
     }
   }
 
-  async function fetchJson(url, opts){
-    const res = await fetch(url, opts);
-    const text = await res.text();
+async function fetchJson(url, opts) {
+  const res = await fetch(url, opts);
+  const text = await res.text();
 
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch {
-      data = { raw: text };
-    }
-
-    if(!res.ok){
-      throw new Error(data?.error ? data.error : "HTTP " + res.status + " " + text);
-    }
-
-    return data;
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    data = { raw: text };
   }
 
-  function setActionsEnabled(enabled){
+  if (!res.ok) {
+    const err =
+      data?.error ||
+      (typeof data?.details === "string"
+        ? data.details
+        : data?.details?.message || data?.details?.raw) ||
+      ("HTTP " + res.status);
+
+    throw new Error(err);
+  }
+
+  return data;
+}
+
+  function setActionsEnabled(enabled) {
     downloadBtn.disabled = !enabled;
     copyBtn.disabled = !enabled;
     openBtn.disabled = !enabled;
   }
 
-  function setThumbImage(url){
-    if(!url){
+  function setThumbImage(url) {
+    if (!url) {
       youtubeThumb.style.display = "none";
       youtubeThumb.removeAttribute("src");
       youtubeThumbEmpty.style.display = "flex";
@@ -1172,25 +1146,26 @@
     youtubeThumbEmpty.style.display = "none";
   }
 
-  function makeAvatarLabel(name){
+  function makeAvatarLabel(name) {
     const trimmed = (name || "").trim();
-    if(!trimmed) return "AI";
+    if (!trimmed) return "AI";
 
     const words = trimmed.split(/\s+/).filter(Boolean);
-    if(words.length === 1) return words[0].slice(0,2).toUpperCase();
+    if (words.length === 1) return words[0].slice(0, 2).toUpperCase();
 
     return (words[0][0] + words[1][0]).toUpperCase();
   }
 
-  function updateVideoMeta(data){
-    youtubeTitle.textContent = data?.title || "Your generated thumbnail preview will appear here";
+  function updateVideoMeta(data) {
+    youtubeTitle.textContent =
+      data?.title || "Your generated thumbnail preview will appear here";
     youtubeChannelName.textContent = data?.author_name || "Creator Channel";
     youtubeStats.textContent = "124K views • 3 days ago";
     youtubeDuration.textContent = "12:48";
     channelAvatar.textContent = makeAvatarLabel(data?.author_name || "AI");
   }
 
-  function resetPreview(){
+  function resetPreview() {
     setThumbImage(null);
     youtubeTitle.textContent = "Your generated thumbnail preview will appear here";
     youtubeChannelName.textContent = "Creator Channel";
@@ -1199,7 +1174,7 @@
     channelAvatar.textContent = "AI";
   }
 
-  function startGeneratingPhrases(){
+  function startGeneratingPhrases() {
     stopGeneratingPhrases();
     phraseIndex = 0;
     setStatus("work", GEN_PHRASES[phraseIndex]);
@@ -1207,94 +1182,187 @@
     phraseTimer = setInterval(() => {
       phraseIndex = (phraseIndex + 1) % GEN_PHRASES.length;
       setStatus("work", GEN_PHRASES[phraseIndex]);
-    }, 5000);
+    }, 3500);
   }
 
-  function stopGeneratingPhrases(){
-    if(phraseTimer) clearInterval(phraseTimer);
+  function stopGeneratingPhrases() {
+    if (phraseTimer) clearInterval(phraseTimer);
     phraseTimer = null;
   }
 
-  function ddSet(value){
-    textPosHidden.value = value;
-    ddValuePos.textContent =
-      value === "auto" ? "Auto" :
-      value === "top" ? "Top" :
-      "Bottom";
+  function slugify(s) {
+    return String(s || "")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s-]/gu, "")
+      .trim()
+      .replace(/\s+/g, "-")
+      .slice(0, 60) || "thumbnail";
+  }
 
-    [...ddMenuPos.querySelectorAll(".ddItem")].forEach(item => {
-      item.classList.toggle("active", item.dataset.value === value);
-    });
-
-    if(generatedUrl){
-      refreshFinalPreview().catch(console.error);
+  function cleanupObjectUrl() {
+    if (generatedObjectUrl) {
+      URL.revokeObjectURL(generatedObjectUrl);
+      generatedObjectUrl = null;
     }
   }
 
-  function ddOpen(){
-    ddPos.classList.add("open");
-  }
-
-  function ddClose(){
-    ddPos.classList.remove("open");
-  }
-
-  ddBtnPos.addEventListener("click", () => {
-    ddPos.classList.contains("open") ? ddClose() : ddOpen();
-  });
-
-  ddMenuPos.addEventListener("click", (e) => {
-    const item = e.target.closest(".ddItem");
-    if(!item) return;
-    ddSet(item.dataset.value);
-    ddClose();
-  });
-
-  document.addEventListener("click", (e) => {
-    if(!ddPos.contains(e.target)) ddClose();
-  });
-
-  ddSet("auto");
-
-  function refreshAdvanced(){
-    const has = customText.value.trim().length > 0;
-    advancedRow.style.display = has ? "block" : "none";
-
-    if(!has) ddSet("auto");
-  }
-
-  customText.addEventListener("input", () => {
-    refreshAdvanced();
-    if(generatedUrl){
-      refreshFinalPreview().catch(console.error);
+  function refreshAdvanced() {
+    if (advancedRow) {
+      advancedRow.style.display = "none";
     }
-  });
+  }
 
-  refreshAdvanced();
+  function normalizeText(s) {
+    return String(s || "").replace(/\s+/g, " ").trim();
+  }
 
-  function buildPrompt({ title, channel, extraText }){
-    const parts = [
-      `Video title: ${title || "Untitled"}`,
-      `Channel: ${channel || "Unknown"}`,
-      "Goal: make the thumbnail more clickable, more modern, more premium, and more aligned with current YouTube trends."
+  function detectLanguage(text) {
+    const t = String(text || "");
+    if (/[а-яёіїєґ]/i.test(t)) return "ru";
+    if (/[ა-ჰ]/i.test(t)) return "ka";
+    if (/[一-龯ぁ-ゔァ-ヴー々〆〤]/u.test(t)) return "ja";
+    if (/[가-힣]/u.test(t)) return "ko";
+    if (/[A-Za-z]/.test(t)) return "en";
+    return (navigator.language || "en").slice(0, 2).toLowerCase();
+  }
+
+  function inferKeywords(title, channel, extraText, custom) {
+    const source = [title, channel, extraText, custom]
+      .filter(Boolean)
+      .join(" ")
+      .toLowerCase()
+      .replace(/[^\p{L}\p{N}\s]/gu, " ");
+
+    const stop = new Set([
+      "the","a","an","and","or","but","for","with","from","into","your","you",
+      "this","that","how","why","what","when","where","who","will","would","can",
+      "could","should","about","after","before","over","under","more","less",
+      "video","youtube","channel","thumbnail","make","style","look","please",
+      "это","как","что","для","или","без","над","под","про","вот","нужно",
+      "video","official","feat"
+    ]);
+
+    const words = source
+      .split(/\s+/)
+      .map((w) => w.trim())
+      .filter((w) => w.length > 2 && !stop.has(w));
+
+    const freq = new Map();
+    for (const w of words) {
+      freq.set(w, (freq.get(w) || 0) + 1);
+    }
+
+    return [...freq.entries()]
+      .sort((a, b) => b[1] - a[1])
+      .slice(0, 12)
+      .map(([w]) => w);
+  }
+
+  function inferCategory(text) {
+    const t = String(text || "").toLowerCase();
+
+    if (/(car|drift|bmw|f1|racing|track|engine|turbo|speed)/i.test(t)) return "automotive";
+    if (/(money|business|startup|saas|marketing|sales|finance|income)/i.test(t)) return "business";
+    if (/(gaming|game|valorant|cs2|minecraft|gta|fortnite|warzone)/i.test(t)) return "gaming";
+    if (/(music|song|remix|album|beat|dj|phonk)/i.test(t)) return "music";
+    if (/(tutorial|guide|explained|how to|tips|mistakes|learn)/i.test(t)) return "education";
+    if (/(vlog|travel|day in my life|challenge)/i.test(t)) return "vlog";
+
+    return "general";
+  }
+
+  function inferEmotionalAngle(title, extraText, custom) {
+    const t = [title, extraText, custom].join(" ").toLowerCase();
+
+    if (/(secret|nobody tells you|hidden|truth|exposed|revealed)/i.test(t)) return "reveal";
+    if (/(warning|danger|mistake|never|don’t|dont|avoid)/i.test(t)) return "warning";
+    if (/(million|money|profit|income|rich|revenue)/i.test(t)) return "money";
+    if (/(before|after|transform|changed everything|glow up|results)/i.test(t)) return "transformation";
+    if (/(vs|battle|ranked|best|worst|challenge)/i.test(t)) return "competition";
+    if (/(crazy|insane|shocking|unbelievable|wtf)/i.test(t)) return "shock";
+
+    return "curiosity";
+  }
+
+  function inferAudience(category) {
+    if (category === "business") return "entrepreneurs, creators, and online business viewers";
+    if (category === "gaming") return "gamers and streaming audience";
+    if (category === "music") return "music fans and visual-culture audience";
+    if (category === "education") return "learners looking for clear results";
+    if (category === "automotive") return "car enthusiasts and performance fans";
+    if (category === "vlog") return "broad YouTube lifestyle audience";
+    return "general YouTube audience";
+  }
+
+  function buildPromptSummary(meta) {
+    const lines = [
+      "Create a bright, highly clickable YouTube thumbnail.",
+      "Prioritize strong CTR, dramatic visual hierarchy, and mobile readability.",
+      "The image model must render the final text directly inside the image."
     ];
 
-    if (extraText) {
-      parts.push(`Extra instructions: ${extraText}`);
+    if (meta.extraText) {
+      lines.push(`User additional instructions: ${meta.extraText}`);
     }
 
-    return parts.join("\n");
+    if (meta.custom) {
+      lines.push(`Use this exact thumbnail text if possible: ${meta.custom}`);
+    }
+
+    return lines.join("\n");
   }
 
-  async function autoAnalyzeIfPossible(){
+function buildRichContext() {
+  const title = analyzed?.title || "";
+  const channel = analyzed?.author_name || "";
+  const extraText = normalizeText(extra.value);
+  const custom = normalizeText(customText.value);
+  const language = detectLanguage([title, extraText, custom].join(" "));
+  const keywords = inferKeywords(title, channel, extraText, custom);
+  const category = inferCategory([title, channel, extraText].join(" "));
+  const emotionalAngle = inferEmotionalAngle(title, extraText, custom);
+  const videoTopic = keywords.slice(0, 6).join(", ");
+
+  return {
+    youtube_url: ytUrl.value.trim(),
+    image_url: analyzed?.thumbnail_url || "",
+    thumbnail_url: analyzed?.thumbnail_url || "",
+    video_title: title,
+    channel_name: channel,
+    video_description: "",
+    transcript: "",
+    comments_summary:
+      "Focus on what would make this video most clickable to a broad YouTube audience.",
+    topic_keywords: keywords,
+    audience: inferAudience(category),
+    language,
+    category,
+    published_at: "",
+    video_topic: videoTopic,
+    emotional_angle: emotionalAngle,
+    additional_instructions: extraText,
+    custom_text: custom,
+    prompt: [
+      "Create a brand new bright viral YouTube thumbnail.",
+      "Do not keep the literal original frame composition.",
+      "Do not just place title text on the raw screenshot.",
+      "Use top-performing YouTube clickbait logic.",
+      "The result should feel redesigned, emotional, bold, and highly clickable.",
+      buildPromptSummary({ title, channel, extraText, custom })
+    ].join("\n")
+  };
+}
+
+  async function autoAnalyzeIfPossible() {
     const u = ytUrl.value.trim();
 
-    if(!u || !isYouTubeUrl(u)){
+    if (!u || !isYouTubeUrl(u)) {
       analyzed = null;
+      aiPlan = null;
       generateBtn.disabled = true;
       setActionsEnabled(false);
 
-      if(!generatedUrl){
+      if (!generatedUrl) {
         resetPreview();
       }
 
@@ -1302,50 +1370,51 @@
       return;
     }
 
-    if(lastAnalyzedUrl === u && analyzed) return;
+    if (lastAnalyzedUrl === u && analyzed) return;
 
     setStatus("work", "Analyzing video…");
 
-    try{
+    try {
       const data = await fetchJson(`${WORKER_BASE}/api/oembed?url=${encodeURIComponent(u)}`);
       analyzed = data;
+      aiPlan = null;
       lastAnalyzedUrl = u;
+
+      generatedUrl = null;
+      generatedBlob = null;
+      cleanupObjectUrl();
+      setActionsEnabled(false);
 
       updateVideoMeta(data);
 
-      if(!generatedUrl && data.thumbnail_url){
+      if (data.thumbnail_url) {
         setThumbImage(data.thumbnail_url);
       }
 
       generateBtn.disabled = false;
       setStatus("ok", "Video analyzed. Ready to generate.");
-    }catch(e){
+    } catch (e) {
       analyzed = null;
+      aiPlan = null;
       generateBtn.disabled = true;
 
-      if(!generatedUrl){
+      if (!generatedUrl) {
         resetPreview();
       }
 
-      setStatus("bad", "Analyze failed");
+      setStatus("bad", "Couldn’t load this video");
       console.error(e);
     }
   }
 
-  function resetAll(){
+  function resetAll() {
     analyzed = null;
+    aiPlan = null;
     generatedUrl = null;
-    finalBlob = null;
-    serverHeadline = "";
-    serverStyle = "dramatic";
-    serverPlacement = "bottom";
-    serverArtDirection = null;
+    generatedBlob = null;
     lastAnalyzedUrl = null;
 
-    if(finalPreviewUrl){
-      URL.revokeObjectURL(finalPreviewUrl);
-      finalPreviewUrl = null;
-    }
+    cleanupObjectUrl();
 
     ytUrl.value = "";
     customText.value = "";
@@ -1370,871 +1439,175 @@
 
   ytUrl.addEventListener("blur", () => autoAnalyzeIfPossible());
 
-  generateBtn.addEventListener("click", async () => {
-    if(!analyzed){
-      await autoAnalyzeIfPossible();
-      if(!analyzed) return;
-    }
+  customText.addEventListener("input", refreshAdvanced);
+  refreshAdvanced();
 
-    startGeneratingPhrases();
+  async function preloadGeneratedImage(url) {
+    const res = await fetch(url, { mode: "cors" });
+    const blob = await res.blob();
 
-    const prompt = buildPrompt({
-      title: analyzed.title || "Untitled",
-      channel: analyzed.author_name || "",
-      extraText: extra.value.trim()
+    cleanupObjectUrl();
+    generatedBlob = blob;
+    generatedObjectUrl = URL.createObjectURL(blob);
+    setThumbImage(generatedObjectUrl);
+  }
+
+async function generateThumbnail() {
+  if (!analyzed) {
+    await autoAnalyzeIfPossible();
+    if (!analyzed) return;
+  }
+
+  startGeneratingPhrases();
+  generateBtn.disabled = true;
+  setActionsEnabled(false);
+
+  try {
+    const payload = buildRichContext();
+
+    const chatPlan = await fetchJson(`${WORKER_BASE}/api/chat-prompt`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
     });
 
-    try{
-      const submit = await fetchJson(`${WORKER_BASE}/api/generate`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          image_url: analyzed.thumbnail_url,
-          prompt,
-          video_title: analyzed.title || "",
-          channel_name: analyzed.author_name || "",
-          custom_text: (customText.value || "").trim(),
-          image_size: "landscape_16_9",
-          num_images: 1,
-          max_images: 1
-        })
-      });
+    aiPlan = chatPlan || null;
 
-      serverHeadline = submit.headline || "";
-      serverStyle = submit.style || "dramatic";
-      serverPlacement = submit.placement || "bottom";
-      serverArtDirection = submit.art_direction || null;
-
-      const statusUrl = submit.status_url || null;
-      const resultUrl = submit.response_url || null;
-
-      if(!statusUrl || !resultUrl){
-        throw new Error("Bad worker response");
-      }
-
-      const t0 = Date.now();
-      const timeoutMs = 120000;
-
-      while(true){
-        await new Promise(resolve => setTimeout(resolve, 1200));
-
-        const st = await fetchJson(`${WORKER_BASE}/api/status?url=${encodeURIComponent(statusUrl)}`);
-        const s = String(st.status || st.state || "unknown").toLowerCase();
-
-        if(s.includes("complete") || s.includes("succeed")) break;
-        if(s.includes("fail") || s.includes("error")) throw new Error("Generation failed");
-        if(Date.now() - t0 > timeoutMs) throw new Error("Timeout. Try again.");
-      }
-
-      const result = await fetchJson(`${WORKER_BASE}/api/result?url=${encodeURIComponent(resultUrl)}`);
-      const img =
-        result?.images?.[0]?.url ||
-        result?.output?.images?.[0]?.url ||
-        result?.image?.url ||
-        result?.image_url ||
-        null;
-
-      if(!img) throw new Error("No image URL in result");
-
-      generatedUrl = img;
-      await refreshFinalPreview();
-      stopGeneratingPhrases();
-      setStatus("ok", "Done. Your thumbnail is ready.");
-    }catch(e){
-      stopGeneratingPhrases();
-      setStatus("bad", "Generate failed");
-      console.error(e);
+    if (chatPlan?.strategy?.best_text) {
+      setStatus("work", "Finalizing your thumbnail…");
     }
-  });
+
+    const submit = await fetchJson(`${WORKER_BASE}/api/generate`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...payload,
+        aspect_ratio: "16:9"
+      })
+    });
+
+    const img =
+      submit?.image_url ||
+      submit?.images?.[0]?.url ||
+      null;
+
+    if (!img) {
+      throw new Error("No image URL in result");
+    }
+
+    generatedUrl = img;
+    generatedBlob = null;
+
+    await preloadGeneratedImage(img);
+
+    if (submit?.strategy) {
+      aiPlan = {
+        ...aiPlan,
+        strategy: submit.strategy,
+        thumbnail_text:
+          submit.strategy?.headline ||
+          submit.strategy?.best_text ||
+          aiPlan?.thumbnail_text ||
+          ""
+      };
+    }
+
+    stopGeneratingPhrases();
+    setActionsEnabled(true);
+    generateBtn.disabled = false;
+
+    setStatus("ok", "Thumbnail is ready");
+  } catch (e) {
+    stopGeneratingPhrases();
+    generateBtn.disabled = false;
+    setStatus("bad", "Generate failed");
+    console.error(e);
+  }
+}
+  generateBtn.addEventListener("click", generateThumbnail);
 
   resetBtn.addEventListener("click", () => {
     resetAll();
   });
 
-  function clamp(v, min, max){
-    return Math.max(min, Math.min(max, v));
-  }
-
-  function roundRect(ctx, x, y, w, h, r){
-    const rr = Math.min(r, w / 2, h / 2);
-    ctx.beginPath();
-    ctx.moveTo(x + rr, y);
-    ctx.arcTo(x + w, y, x + w, y + h, rr);
-    ctx.arcTo(x + w, y + h, x, y + h, rr);
-    ctx.arcTo(x, y + h, x, y, rr);
-    ctx.arcTo(x, y, x + w, y, rr);
-    ctx.closePath();
-  }
-
-  function hexToRgb(hex){
-    const s = String(hex || "").trim();
-    const m = s.match(/^#([0-9a-fA-F]{6})$/);
-    if(!m) return null;
-    const v = m[1];
-    return {
-      r: parseInt(v.slice(0, 2), 16),
-      g: parseInt(v.slice(2, 4), 16),
-      b: parseInt(v.slice(4, 6), 16)
-    };
-  }
-
-  function rgbaFromHex(hex, a, fallback = "rgba(255,255,255,1)"){
-    const rgb = hexToRgb(hex);
-    if(!rgb) return fallback;
-    return `rgba(${rgb.r}, ${rgb.g}, ${rgb.b}, ${a})`;
-  }
-
-  function rgbToHsl(r, g, b){
-    r /= 255;
-    g /= 255;
-    b /= 255;
-
-    const max = Math.max(r, g, b);
-    const min = Math.min(r, g, b);
-    let h, s;
-    const l = (max + min) / 2;
-
-    if(max === min){
-      h = s = 0;
-    }else{
-      const d = max - min;
-      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
-
-      switch(max){
-        case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-        case g: h = (b - r) / d + 2; break;
-        default: h = (r - g) / d + 4; break;
-      }
-
-      h /= 6;
-    }
-
-    return {
-      h: h * 360,
-      s: s * 100,
-      l: l * 100
-    };
-  }
-
-  function sampleRegionStats(ctx, x, y, w, h){
-    let data;
-    try{
-      data = ctx.getImageData(x, y, w, h).data;
-    }catch{
-      return {
-        brightness: 128,
-        contrast: 40,
-        edge: 22,
-        avgRgb: { r: 180, g: 180, b: 180 },
-        hsl: { h: 0, s: 0, l: 50 }
-      };
-    }
-
-    let sum = 0;
-    let sumSq = 0;
-    let count = 0;
-    let rSum = 0;
-    let gSum = 0;
-    let bSum = 0;
-
-    const stride = 4 * 6;
-
-    for(let i = 0; i < data.length; i += stride){
-      const r = data[i];
-      const g = data[i + 1];
-      const b = data[i + 2];
-      const lum = 0.2126 * r + 0.7152 * g + 0.0722 * b;
-
-      sum += lum;
-      sumSq += lum * lum;
-      rSum += r;
-      gSum += g;
-      bSum += b;
-      count++;
-    }
-
-    const brightness = sum / Math.max(1, count);
-    const variance = Math.max(0, sumSq / Math.max(1, count) - brightness * brightness);
-    const contrast = Math.sqrt(variance);
-
-    const avgRgb = {
-      r: Math.round(rSum / Math.max(1, count)),
-      g: Math.round(gSum / Math.max(1, count)),
-      b: Math.round(bSum / Math.max(1, count))
-    };
-
-    const hsl = rgbToHsl(avgRgb.r, avgRgb.g, avgRgb.b);
-
-    const gridStep = 10;
-    const cols = Math.max(3, Math.floor(w / gridStep));
-    const rows = Math.max(3, Math.floor(h / gridStep));
-
-    const gray = [];
-
-    for(let row = 0; row < rows; row++){
-      const arr = [];
-      for(let col = 0; col < cols; col++){
-        const px = Math.min(w - 1, Math.floor(col * w / cols));
-        const py = Math.min(h - 1, Math.floor(row * h / rows));
-        const idx = ((py * w) + px) * 4;
-        const r = data[idx];
-        const g = data[idx + 1];
-        const b = data[idx + 2];
-        arr.push(0.2126 * r + 0.7152 * g + 0.0722 * b);
-      }
-      gray.push(arr);
-    }
-
-    let edgeAcc = 0;
-    let edgeCount = 0;
-
-    for(let yy = 1; yy < gray.length - 1; yy++){
-      for(let xx = 1; xx < gray[yy].length - 1; xx++){
-        const gx = gray[yy][xx + 1] - gray[yy][xx - 1];
-        const gy = gray[yy + 1][xx] - gray[yy - 1][xx];
-        edgeAcc += Math.sqrt(gx * gx + gy * gy);
-        edgeCount++;
-      }
-    }
-
-    const edge = edgeAcc / Math.max(1, edgeCount);
-
-    return {
-      brightness,
-      contrast,
-      edge,
-      avgRgb,
-      hsl
-    };
-  }
-
-  function wrapTextBalanced(ctx, text, maxWidth, maxLines = 3){
-    const words = String(text || "").split(/\s+/).filter(Boolean);
-    if(!words.length) return [""];
-
-    let lines = [];
-    let current = words[0];
-
-    for(let i = 1; i < words.length; i++){
-      const next = current + " " + words[i];
-      if(ctx.measureText(next).width <= maxWidth){
-        current = next;
-      }else{
-        lines.push(current);
-        current = words[i];
-      }
-    }
-
-    lines.push(current);
-
-    if(lines.length <= maxLines){
-      return lines;
-    }
-
-    const out = [];
-    const totalWords = words.length;
-    let cursor = 0;
-
-    for(let i = 0; i < maxLines; i++){
-      const remainWords = totalWords - cursor;
-      const remainLines = maxLines - i;
-      const take = Math.ceil(remainWords / remainLines);
-      out.push(words.slice(cursor, cursor + take).join(" "));
-      cursor += take;
-    }
-
-    return out;
-  }
-
-  function detectHeadlineMood(text){
-    const t = String(text || "").toLowerCase();
-
-    if(
-      t.includes("vs") ||
-      t.includes("battle") ||
-      t.includes("best") ||
-      t.includes("worst") ||
-      t.includes("rank") ||
-      t.includes("pro") ||
-      t.includes("why")
-    ){
-      return "bold";
-    }
-
-    if(
-      t.includes("night") ||
-      t.includes("cinematic") ||
-      t.includes("story") ||
-      t.includes("secret") ||
-      t.includes("luck") ||
-      t.includes("runs out") ||
-      t.includes("dark")
-    ){
-      return "cinematic";
-    }
-
-    if(
-      t.includes("gaming") ||
-      t.includes("win") ||
-      t.includes("insane") ||
-      t.includes("crazy")
-    ){
-      return "gaming";
-    }
-
-    return "neutral";
-  }
-
-  function normalizeArtDirection(raw){
-    const defaults = {
-      text_layout: "top-center",
-      font_style: serverStyle || "dramatic",
-      accent_color: "#ffffff",
-      accent_color_2: "#ffd36a",
-      text_case: "uppercase",
-      plate: "none",
-      stroke_strength: 0.72,
-      shadow_strength: 0.42,
-      tracking: 0.015,
-      max_width_ratio: 0.62,
-      focus_priority: "keep_subject_clear",
-      avoid_zones: ["subject_center", "faces", "main_object"],
-      font_weight: 900
-    };
-
-    if(!raw || typeof raw !== "object") return defaults;
-
-    const allowedLayouts = new Set([
-      "top-left", "top-center", "top-right",
-      "left-center", "center", "right-center",
-      "bottom-left", "bottom-center", "bottom-right"
-    ]);
-
-    const allowedStyles = new Set(["dramatic", "bold", "minimal", "gaming", "cinematic"]);
-    const allowedPlate = new Set(["none", "soft", "strong"]);
-    const allowedCase = new Set(["uppercase", "title", "original"]);
-
-    return {
-      text_layout: allowedLayouts.has(raw.text_layout) ? raw.text_layout : defaults.text_layout,
-      font_style: allowedStyles.has(raw.font_style) ? raw.font_style : defaults.font_style,
-      accent_color: /^#([0-9a-fA-F]{6})$/.test(raw.accent_color || "") ? raw.accent_color : defaults.accent_color,
-      accent_color_2: /^#([0-9a-fA-F]{6})$/.test(raw.accent_color_2 || "") ? raw.accent_color_2 : defaults.accent_color_2,
-      text_case: allowedCase.has(raw.text_case) ? raw.text_case : defaults.text_case,
-      plate: allowedPlate.has(raw.plate) ? raw.plate : defaults.plate,
-      stroke_strength: clamp(Number(raw.stroke_strength) || defaults.stroke_strength, 0, 1),
-      shadow_strength: clamp(Number(raw.shadow_strength) || defaults.shadow_strength, 0, 1),
-      tracking: clamp(Number(raw.tracking) || defaults.tracking, 0, 0.12),
-      max_width_ratio: clamp(Number(raw.max_width_ratio) || defaults.max_width_ratio, 0.28, 0.80),
-      focus_priority: String(raw.focus_priority || defaults.focus_priority),
-      avoid_zones: Array.isArray(raw.avoid_zones) ? raw.avoid_zones.slice(0, 6) : defaults.avoid_zones,
-      font_weight: Math.round(clamp(Number(raw.font_weight) || defaults.font_weight, 500, 950))
-    };
-  }
-
-  function applyTextCase(text, textCase){
-    const t = String(text || "").trim();
-    if(!t) return t;
-
-    if(textCase === "uppercase"){
-      return t.toUpperCase();
-    }
-
-    if(textCase === "title"){
-      return t
-        .toLowerCase()
-        .replace(/\b\w/g, ch => ch.toUpperCase());
-    }
-
-    return t;
-  }
-
-  function pickZoneFromLayout(ctx, w, h, layout){
-    const map = {
-      "top-left":     { rx: 0.05, ry: 0.05, rw: 0.34, rh: 0.24, align: "left",   ax: 0.09, ay: 0.17, vertical: "top" },
-      "top-center":   { rx: 0.18, ry: 0.05, rw: 0.64, rh: 0.22, align: "center", ax: 0.50, ay: 0.17, vertical: "top" },
-      "top-right":    { rx: 0.61, ry: 0.05, rw: 0.34, rh: 0.24, align: "right",  ax: 0.91, ay: 0.17, vertical: "top" },
-
-      "left-center":  { rx: 0.04, ry: 0.33, rw: 0.34, rh: 0.28, align: "left",   ax: 0.09, ay: 0.54, vertical: "center" },
-      "center":       { rx: 0.20, ry: 0.33, rw: 0.60, rh: 0.28, align: "center", ax: 0.50, ay: 0.54, vertical: "center" },
-      "right-center": { rx: 0.62, ry: 0.33, rw: 0.34, rh: 0.28, align: "right",  ax: 0.91, ay: 0.54, vertical: "center" },
-
-      "bottom-left":  { rx: 0.05, ry: 0.64, rw: 0.34, rh: 0.24, align: "left",   ax: 0.09, ay: 0.81, vertical: "bottom" },
-      "bottom-center":{ rx: 0.18, ry: 0.64, rw: 0.64, rh: 0.22, align: "center", ax: 0.50, ay: 0.81, vertical: "bottom" },
-      "bottom-right": { rx: 0.61, ry: 0.64, rw: 0.34, rh: 0.24, align: "right",  ax: 0.91, ay: 0.81, vertical: "bottom" }
-    };
-
-    const z = map[layout] || map["top-center"];
-
-    const x = Math.floor(w * z.rx);
-    const y = Math.floor(h * z.ry);
-    const zw = Math.floor(w * z.rw);
-    const zh = Math.floor(h * z.rh);
-
-    return {
-      name: layout,
-      align: z.align,
-      vertical: z.vertical,
-      anchorX: w * z.ax,
-      anchorY: h * z.ay,
-      boxW: w * z.rw,
-      stats: sampleRegionStats(ctx, x, y, zw, zh)
-    };
-  }
-
-  function chooseAutoZone(ctx, w, h){
-    const zones = [
-      "top-left", "top-center", "top-right",
-      "left-center",
-      "right-center",
-      "bottom-left", "bottom-center", "bottom-right"
-    ];
-
-    let best = null;
-
-    for(const layout of zones){
-      const zone = pickZoneFromLayout(ctx, w, h, layout);
-      const s = zone.stats;
-
-      const edgePenalty = s.edge * 2.4;
-      const contrastPenalty = s.contrast * 1.15;
-      const brightnessPenalty = Math.abs(s.brightness - 118) * 0.95;
-
-      let score = 320 - edgePenalty - contrastPenalty - brightnessPenalty;
-
-      if(layout.includes("left") || layout.includes("right")) score += 6;
-      if(layout === "top-center" || layout === "bottom-center") score += 2;
-      if(s.brightness < 70 || s.brightness > 225) score -= 14;
-
-      if(!best || score > best.score){
-        best = { ...zone, score };
-      }
-    }
-
-    return best || pickZoneFromLayout(ctx, w, h, "top-center");
-  }
-
-  function chooseZone(ctx, w, h, hasManualHeadline, art){
-    if(hasManualHeadline && textPosHidden.value === "top"){
-      return pickZoneFromLayout(ctx, w, h, "top-center");
-    }
-
-    if(hasManualHeadline && textPosHidden.value === "bottom"){
-      return pickZoneFromLayout(ctx, w, h, "bottom-center");
-    }
-
-    if(art?.text_layout){
-      return pickZoneFromLayout(ctx, w, h, art.text_layout);
-    }
-
-    return chooseAutoZone(ctx, w, h);
-  }
-
-  function resolveVisualStyle(styleFromArt, zoneStats, headline){
-    const mood = detectHeadlineMood(headline);
-
-    if(styleFromArt && styleFromArt !== "dramatic"){
-      return styleFromArt;
-    }
-
-    if(mood === "gaming") return "gaming";
-    if(mood === "bold") return "dramatic";
-    if(zoneStats.brightness < 95) return "dramatic";
-    if(zoneStats.brightness < 135) return "cinematic";
-    return "minimal";
-  }
-
-  function buildAdaptiveTextStyle(styleName, zoneStats, imageStats, headline, art){
-    const mood = detectHeadlineMood(headline);
-    const brightness = zoneStats.brightness;
-    const isDark = brightness < 135;
-
-    const warm = imageStats.hsl.h >= 12 && imageStats.hsl.h <= 55 && imageStats.hsl.s > 40;
-    const cool = imageStats.hsl.h >= 180 && imageStats.hsl.h <= 240 && imageStats.hsl.s > 28;
-
-    let fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
-    let fillTop = art?.accent_color || "#ffffff";
-    let fillBottom = art?.accent_color_2 || "#f2f2f2";
-    let stroke = isDark ? "rgba(0,0,0,0.82)" : "rgba(0,0,0,0.54)";
-    let shadow = isDark ? "rgba(0,0,0,0.34)" : "rgba(0,0,0,0.16)";
-    let strokeMul = 0.085;
-    let shadowBlurMul = 0.11;
-    let plate = "rgba(0,0,0,0.18)";
-    let glow = null;
-    let glowBlurMul = 0.22;
-    let tracking = 0;
-    let fontWeight = art?.font_weight || 900;
-
-    if(styleName === "minimal"){
-      fontFamily = 'system-ui, "Segoe UI", Arial, sans-serif';
-      if(!art?.accent_color) fillTop = "#ffffff";
-      if(!art?.accent_color_2) fillBottom = isDark ? "#eef5ff" : "#ffffff";
-      stroke = isDark ? "rgba(0,0,0,0.42)" : "rgba(0,0,0,0.20)";
-      shadow = isDark ? "rgba(0,0,0,0.18)" : "rgba(0,0,0,0.08)";
-      strokeMul = 0.045;
-      shadowBlurMul = 0.06;
-      plate = isDark ? "rgba(0,0,0,0.14)" : "rgba(12,16,24,0.10)";
-    }
-
-    if(styleName === "cinematic" || mood === "cinematic"){
-      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
-      if(!art?.accent_color) fillTop = "#ffffff";
-      if(!art?.accent_color_2) fillBottom = cool ? "#dff3ff" : warm ? "#ffe6b8" : "#dbe6ff";
-      stroke = "rgba(8,12,18,0.76)";
-      shadow = "rgba(0,0,0,0.24)";
-      strokeMul = 0.072;
-      shadowBlurMul = 0.10;
-      plate = "rgba(7,11,18,0.16)";
-      tracking = 0.02;
-    }
-
-    if(styleName === "gaming" || mood === "gaming"){
-      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
-      if(!art?.accent_color) fillTop = "#ffffff";
-      if(!art?.accent_color_2) fillBottom = cool ? "#79ecff" : "#ff79da";
-      stroke = "rgba(7,10,22,0.88)";
-      shadow = "rgba(0,0,0,0.34)";
-      strokeMul = 0.085;
-      shadowBlurMul = 0.15;
-      plate = "rgba(7,10,22,0.20)";
-      glow = cool ? "rgba(110,236,255,0.34)" : "rgba(255,120,218,0.28)";
-      tracking = 0.01;
-    }
-
-    if(styleName === "dramatic" || mood === "bold" || styleName === "bold"){
-      fontFamily = '"Arial Black", Impact, system-ui, sans-serif';
-      if(!art?.accent_color) fillTop = warm ? "#fffaf0" : "#ffffff";
-      if(!art?.accent_color_2) fillBottom = warm ? "#ffd45a" : "#ffffff";
-      stroke = "rgba(0,0,0,0.80)";
-      shadow = "rgba(0,0,0,0.32)";
-      strokeMul = 0.09;
-      shadowBlurMul = 0.12;
-      plate = "rgba(0,0,0,0.18)";
-      tracking = 0.008;
-    }
-
-    if(typeof art?.tracking === "number"){
-      tracking = art.tracking * 1000;
-    }
-
-    if(typeof art?.stroke_strength === "number"){
-      const s = art.stroke_strength;
-      strokeMul = 0.02 + s * 0.11;
-    }
-
-    if(typeof art?.shadow_strength === "number"){
-      const s = art.shadow_strength;
-      shadowBlurMul = 0.03 + s * 0.17;
-    }
-
-    if(art?.plate === "soft"){
-      plate = isDark ? "rgba(0,0,0,0.16)" : "rgba(9,12,20,0.10)";
-    }else if(art?.plate === "strong"){
-      plate = isDark ? "rgba(0,0,0,0.28)" : "rgba(8,12,20,0.18)";
-    }
-
-    return {
-      fontFamily,
-      fillTop,
-      fillBottom,
-      stroke,
-      shadow,
-      strokeMul,
-      shadowBlurMul,
-      plate,
-      glow,
-      glowBlurMul,
-      tracking,
-      fontWeight
-    };
-  }
-
-  function shouldUseCompactPlate(zoneStats, styleName, lineCount, art){
-    if(art?.plate === "none") return false;
-    if(art?.plate === "soft" || art?.plate === "strong") return true;
-
-    if(styleName === "minimal"){
-      return zoneStats.edge > 24 || zoneStats.contrast > 56 || lineCount >= 3;
-    }
-
-    return zoneStats.edge > 27 || zoneStats.contrast > 62 || lineCount >= 3;
-  }
-
-  function drawTextLine(ctx, text, x, y, tracking){
-    if(!tracking){
-      ctx.strokeText(text, x, y);
-      ctx.fillText(text, x, y);
-      return;
-    }
-
-    const chars = [...text];
-    const widths = chars.map(ch => ctx.measureText(ch).width);
-    const totalWidth = widths.reduce((a, b) => a + b, 0) + Math.max(0, chars.length - 1) * tracking;
-    let cursor = x;
-
-    if(ctx.textAlign === "center"){
-      cursor = x - totalWidth / 2;
-    }else if(ctx.textAlign === "right"){
-      cursor = x - totalWidth;
-    }
-
-    for(let i = 0; i < chars.length; i++){
-      const ch = chars[i];
-      const drawX = cursor + widths[i] / 2;
-
-      const prevAlign = ctx.textAlign;
-      ctx.textAlign = "center";
-      ctx.strokeText(ch, drawX, y);
-      ctx.fillText(ch, drawX, y);
-      ctx.textAlign = prevAlign;
-
-      cursor += widths[i] + tracking;
-    }
-  }
-
-  async function composeFinalBlob(){
-    if(!generatedUrl) throw new Error("No generated image");
-
-    const manualHeadline = (customText.value || "").trim();
-    const autoHeadline = serverHeadline || "";
-    let headline = manualHeadline || autoHeadline;
+  async function ensureBlobReady() {
+    if (generatedBlob) return generatedBlob;
+    if (!generatedUrl) throw new Error("No generated image");
 
     const res = await fetch(generatedUrl, { mode: "cors" });
-    const baseBlob = await res.blob();
-
-    if(!headline) return baseBlob;
-
-    const bmp = await createImageBitmap(baseBlob);
-    const w = bmp.width;
-    const h = bmp.height;
-
-    const canvas = document.createElement("canvas");
-    canvas.width = w;
-    canvas.height = h;
-
-    const ctx = canvas.getContext("2d");
-    ctx.drawImage(bmp, 0, 0, w, h);
-
-    const art = normalizeArtDirection(serverArtDirection);
-    headline = applyTextCase(headline, manualHeadline ? "uppercase" : art.text_case);
-
-    const imageStats = sampleRegionStats(ctx, 0, 0, w, h);
-    const zone = chooseZone(ctx, w, h, !!manualHeadline, art);
-
-    const styleName = manualHeadline
-      ? "dramatic"
-      : resolveVisualStyle(art.font_style || serverStyle, zone.stats, headline);
-
-    const maxWidthRatio = manualHeadline
-      ? (textPosHidden.value === "auto" ? art.max_width_ratio : 0.68)
-      : art.max_width_ratio;
-
-    let fontSize = Math.round(h * (styleName === "minimal" ? 0.088 : 0.104));
-    fontSize = clamp(fontSize, 28, 122);
-
-    const maxTextWidth = Math.round(w * maxWidthRatio);
-    let lines = [];
-
-    while(fontSize > 24){
-      const fontFamilyForMeasure =
-        styleName === "minimal"
-          ? 'system-ui, "Segoe UI", Arial, sans-serif'
-          : '"Arial Black", Impact, system-ui, sans-serif';
-
-      ctx.font = `${art.font_weight || 900} ${fontSize}px ${fontFamilyForMeasure}`;
-      lines = wrapTextBalanced(
-        ctx,
-        headline,
-        maxTextWidth,
-        zone.align === "center" ? 3 : 2
-      );
-
-      const fits = lines.every(line => ctx.measureText(line).width <= maxTextWidth);
-      if(fits) break;
-
-      fontSize -= 3;
-    }
-
-    if(lines.length > 3){
-      lines = lines.slice(0, 2).concat([lines.slice(2).join(" ")]);
-    }
-
-    const style = buildAdaptiveTextStyle(styleName, zone.stats, imageStats, headline, art);
-    const lineHeight = Math.round(fontSize * (styleName === "minimal" ? 1.04 : 0.92));
-    const blockHeight = lineHeight * lines.length;
-    const compactPlate = shouldUseCompactPlate(zone.stats, styleName, lines.length, art);
-
-    ctx.font = `${style.fontWeight} ${fontSize}px ${style.fontFamily}`;
-    ctx.textBaseline = "alphabetic";
-    ctx.lineJoin = "round";
-    ctx.miterLimit = 2;
-
-    const metrics = lines.map(line => ctx.measureText(line).width);
-    const widest = Math.max(...metrics, 0);
-
-    const padX = Math.round(fontSize * (compactPlate ? 0.24 : 0.12));
-    const padY = Math.round(fontSize * (compactPlate ? 0.18 : 0.08));
-    const plateW = widest + padX * 2;
-    const plateH = blockHeight + padY * 2;
-
-    ctx.textAlign = zone.align;
-
-    const x = zone.anchorX;
-
-    let yStart;
-    if(zone.vertical === "top"){
-      yStart = zone.anchorY + lineHeight * 0.12;
-    }else if(zone.vertical === "bottom"){
-      yStart = zone.anchorY - blockHeight + lineHeight;
-    }else{
-      yStart = zone.anchorY - blockHeight / 2 + lineHeight * 0.78;
-    }
-
-    yStart = clamp(yStart, lineHeight + h * 0.04, h - h * 0.05 - blockHeight + lineHeight);
-
-    if(compactPlate){
-      let plateX;
-      if(zone.align === "left"){
-        plateX = x - padX;
-      }else if(zone.align === "right"){
-        plateX = x - widest - padX;
-      }else{
-        plateX = x - plateW / 2;
-      }
-
-      const plateY = yStart - lineHeight + fontSize * 0.08 - padY;
-      const radius = Math.round(fontSize * 0.22);
-
-      const plateAlphaTop = art.plate === "strong" ? 0.34 : 0.18;
-      const plateAlphaBottom = art.plate === "strong" ? 0.22 : 0.10;
-
-      const plateGrad = ctx.createLinearGradient(plateX, plateY, plateX, plateY + plateH);
-      plateGrad.addColorStop(0, rgbaFromHex(art.accent_color, Math.min(0.18, plateAlphaTop), style.plate));
-      plateGrad.addColorStop(1, rgbaFromHex(art.accent_color_2, Math.min(0.12, plateAlphaBottom), style.plate));
-
-      ctx.save();
-      ctx.shadowColor = "rgba(0,0,0,0.14)";
-      ctx.shadowBlur = Math.round(fontSize * 0.16);
-      ctx.shadowOffsetY = Math.round(fontSize * 0.04);
-      ctx.fillStyle = plateGrad;
-      roundRect(ctx, plateX, plateY, plateW, plateH, radius);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    const fillGrad = ctx.createLinearGradient(0, yStart - lineHeight, 0, yStart + blockHeight);
-    fillGrad.addColorStop(0, style.fillTop);
-    fillGrad.addColorStop(1, style.fillBottom);
-
-    ctx.fillStyle = fillGrad;
-    ctx.strokeStyle = style.stroke;
-    ctx.lineWidth = Math.max(1.5, Math.round(fontSize * style.strokeMul));
-
-    if(style.glow){
-      ctx.shadowColor = style.glow;
-      ctx.shadowBlur = Math.max(8, Math.round(fontSize * style.glowBlurMul));
-      ctx.shadowOffsetY = 0;
-    }else{
-      ctx.shadowColor = style.shadow;
-      ctx.shadowBlur = Math.max(3, Math.round(fontSize * style.shadowBlurMul));
-      ctx.shadowOffsetY = Math.max(1, Math.round(fontSize * 0.03));
-    }
-
-    let y = yStart;
-    for(const line of lines){
-      drawTextLine(ctx, line, x, y, style.tracking);
-      y += lineHeight;
-    }
-
-    ctx.shadowColor = "transparent";
-    ctx.shadowBlur = 0;
-    ctx.shadowOffsetY = 0;
-
-    return await new Promise(resolve => canvas.toBlob(resolve, "image/png", 0.95));
+    generatedBlob = await res.blob();
+    return generatedBlob;
   }
 
-  async function refreshFinalPreview(){
-    if(!generatedUrl) return;
+  async function onDownload() {
+    try {
+      const blob = await ensureBlobReady();
+      const objectUrl = URL.createObjectURL(blob);
 
-    const blob = await composeFinalBlob();
-    if(!blob) return;
-
-    finalBlob = blob;
-
-    if(finalPreviewUrl){
-      URL.revokeObjectURL(finalPreviewUrl);
-      finalPreviewUrl = null;
-    }
-
-    finalPreviewUrl = URL.createObjectURL(blob);
-    setThumbImage(finalPreviewUrl);
-    setActionsEnabled(true);
-  }
-
-  async function onDownload(){
-    try{
-      if(!finalBlob){
-        await refreshFinalPreview();
-      }
-
-      const objectUrl = URL.createObjectURL(finalBlob);
-
+      const aiText = aiPlan?.thumbnail_text || customText.value.trim() || analyzed?.title || "thumbnail";
       const a = document.createElement("a");
       a.href = objectUrl;
-      a.download = "thumbnail.png";
+      a.download = `${slugify(aiText)}.png`;
       document.body.appendChild(a);
       a.click();
       a.remove();
 
       setTimeout(() => URL.revokeObjectURL(objectUrl), 2000);
-    }catch(e){
-      if(finalPreviewUrl){
-        window.open(finalPreviewUrl, "_blank", "noopener,noreferrer");
-      }else if(generatedUrl){
+    } catch (e) {
+      console.error(e);
+      if (generatedObjectUrl) {
+        window.open(generatedObjectUrl, "_blank", "noopener,noreferrer");
+      } else if (generatedUrl) {
         window.open(generatedUrl, "_blank", "noopener,noreferrer");
       }
     }
   }
 
-  async function onCopy(){
-    if(!generatedUrl) return;
+  async function onCopy() {
+    if (!generatedUrl) return;
 
-    try{
-      if(!finalBlob){
-        await refreshFinalPreview();
-      }
+    try {
+      const blob = await ensureBlobReady();
 
-      if(!navigator.clipboard || !window.ClipboardItem){
+      if (!navigator.clipboard || !window.ClipboardItem) {
         await navigator.clipboard.writeText(generatedUrl);
         setStatus("ok", "Clipboard image not supported — image URL copied.");
-        setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 1200);
+        setTimeout(() => {
+          setStatus("ok", "Done. Your thumbnail is ready.");
+        }, 1200);
         return;
       }
 
-      const item = new ClipboardItem({ [finalBlob.type]: finalBlob });
+      const item = new ClipboardItem({ [blob.type]: blob });
       await navigator.clipboard.write([item]);
 
       setStatus("ok", "Image copied to clipboard.");
-      setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 900);
-    }catch{
-      await navigator.clipboard.writeText(generatedUrl);
-      setStatus("ok", "Copy failed — image URL copied.");
-      setTimeout(() => setStatus("ok", "Done. Your thumbnail is ready."), 1200);
+      setTimeout(() => {
+        setStatus("ok", "Done. Your thumbnail is ready.");
+      }, 900);
+    } catch (e) {
+      console.error(e);
+      try {
+        await navigator.clipboard.writeText(generatedUrl);
+        setStatus("ok", "Copy failed — image URL copied.");
+        setTimeout(() => {
+          setStatus("ok", "Done. Your thumbnail is ready.");
+        }, 1200);
+      } catch {}
     }
   }
 
-  async function onOpen(){
-    if(!generatedUrl) return;
+  async function onOpen() {
+    if (!generatedUrl) return;
 
-    try{
-      if(!finalBlob){
-        await refreshFinalPreview();
-      }
-
-      const objectUrl = URL.createObjectURL(finalBlob);
+    try {
+      const blob = await ensureBlobReady();
+      const objectUrl = URL.createObjectURL(blob);
       window.open(objectUrl, "_blank", "noopener,noreferrer");
       setTimeout(() => URL.revokeObjectURL(objectUrl), 5000);
-    }catch{
-      window.open(finalPreviewUrl || generatedUrl, "_blank", "noopener,noreferrer");
+    } catch (e) {
+      console.error(e);
+      window.open(generatedObjectUrl || generatedUrl, "_blank", "noopener,noreferrer");
     }
   }
 
@@ -2242,10 +1615,10 @@
   copyBtn.addEventListener("click", onCopy);
   openBtn.addEventListener("click", onOpen);
 
-  document.querySelectorAll(".exampleCard").forEach(btn => {
+  document.querySelectorAll(".exampleCard").forEach((btn) => {
     btn.addEventListener("click", () => {
       ytUrl.value = btn.dataset.url || "";
-      ytUrl.dispatchEvent(new Event("input", { bubbles:true }));
+      ytUrl.dispatchEvent(new Event("input", { bubbles: true }));
     });
   });
 </script>
