@@ -15,7 +15,7 @@
 		"nodejs_compat"
 	],
 	"vars": {
-		"FAL_MODEL": "fal-ai/bytedance/seedream/v4.5/edit",
+		"FAL_MODEL": "fal-ai/nano-banana-2/edit",
 		"FAL_LLM_PATH": "openrouter/router/openai/v1/chat/completions",
 		"FAL_LLM_MODEL": "meta-llama/llama-3.1-8b-instruct"
     }
